@@ -37,6 +37,11 @@
     "simple-line-icons": "^2.4.1"
   },
   "devDependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
     "react-scripts": "^2.1.1"
   },
   "scripts": {
@@ -46,9 +51,6 @@
     "test:cov": "react-scripts test --coverage",
     "test:debug": "react-scripts --inspect-brk test --runInBand",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": [
     ">0.2%",

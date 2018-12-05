@@ -12,11 +12,12 @@ export default {
     {
       title: true,
       name: 'Theme',
-      wrapper: {            // optional wrapper object
-        element: '',        // required valid HTML5 element tag
-        attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+      wrapper: {
+        // optional wrapper object
+        element: '', // required valid HTML5 element tag
+        attributes: {}, // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
       },
-      class: ''             // optional class names space delimited list for title item ex: "text-center"
+      class: '', // optional class names space delimited list for title item ex: "text-center"
     },
     {
       name: 'Colors',
@@ -267,14 +268,14 @@ export default {
       icon: 'icon-cloud-download',
       class: 'mt-auto',
       variant: 'success',
-      attributes: { target: '_blank', rel: "noopener" },
+      attributes: { target: '_blank', rel: 'noopener' },
     },
     {
       name: 'Try CoreUI PRO',
       url: 'https://coreui.io/pro/react/',
       icon: 'icon-layers',
       variant: 'danger',
-      attributes: { target: '_blank', rel: "noopener" },
+      attributes: { target: '_blank', rel: 'noopener' },
     },
   ],
 };
