@@ -1,15 +1,14 @@
 {
-  "name": "@coreui/coreui-free-react-admin-template",
-  "version": "2.1.2",
-  "description": "CoreUI React Open Source Bootstrap 4 Admin Template",
-  "author": "Łukasz Holeczek",
-  "homepage": "https://coreui.io",
-  "copyright": "Copyright 2018 creativeLabs Łukasz Holeczek",
-  "license": "MIT",
+  "name": "otg-ride-admin-web",
+  "version": "1.0.0",
+  "description": "OTG Ride Admin web port based on CoreUI React Open Source Bootstrap 4 Admin Template",
+  "author": "Chris Chen",
+  "homepage": "https://otgride.com",
+  "copyright": "Copyright 2018 Chris Chen",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git@github.com:coreui/coreui-free-react-admin-template.git"
+    "url": "https://chrischen79@bitbucket.org/otg-ride-dev/admin-web.git"
   },
   "dependencies": {
     "@coreui/coreui": "^2.1.1",
@@ -47,9 +46,6 @@
     "test:cov": "react-scripts test --coverage",
     "test:debug": "react-scripts --inspect-brk test --runInBand",
     "eject": "react-scripts eject"
-  },
-  "bugs": {
-    "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
   },
   "eslintConfig": {
     "extends": "react-app"
