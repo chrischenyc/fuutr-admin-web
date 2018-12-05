@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux';
+
+import store from './store';
+
 import Loadable from 'react-loadable';
 import './App.scss';
 
@@ -30,14 +34,16 @@ const Page500 = Loadable({
 class App extends Component {
   render() {
     return (
-      <Router>
-        <Switch>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/404" component={Page404} />
-          <Route exact path="/500" component={Page500} />
-          <Route path="/" component={DefaultLayout} />
-        </Switch>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <Switch>
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/404" component={Page404} />
+            <Route exact path="/500" component={Page500} />
+            <Route path="/" component={DefaultLayout} />
+          </Switch>
+        </Router>
+      </Provider>
     );
   }
 }
