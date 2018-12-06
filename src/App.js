@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import Loadable from 'react-loadable';
 
 import store from './store';
-import requireAuth from './containers/requireAuth/requireAuth';
+import AuthenticateRoute from './containers/AuthenticateRoute/AuthenticateRoute';
 
 import './App.scss';
 
@@ -41,7 +41,7 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Route exact path="/404" component={Page404} />
             <Route exact path="/500" component={Page500} />
-            <Route path="/" component={DefaultLayout} />
+            <AuthenticateRoute path="/" component={DefaultLayout} />
           </Switch>
         </Router>
       </Provider>
