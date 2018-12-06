@@ -1,8 +1,6 @@
 import React from 'react';
 import DefaultLayout from './containers/DefaultLayout';
 
-import requireAuth from './containers/requireAuth/requireAuth';
-
 const Dashboard = React.lazy(() => import('./views/Dashboard'));
 const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
