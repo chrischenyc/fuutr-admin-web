@@ -52,6 +52,7 @@
     "test:cov": "react-scripts test --coverage",
     "test:debug": "react-scripts --inspect-brk test --runInBand",
     "eject": "react-scripts eject",
+    "predeploy:staging": "npm run build",
     "deploy:staging": "aws s3 sync build/ s3://otg-admin-staging"
   },
   "browserslist": [
