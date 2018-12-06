@@ -39,7 +39,6 @@
     "simple-line-icons": "^2.4.1"
   },
   "devDependencies": {
-    "eslint": "^5.9.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
@@ -52,7 +51,8 @@
     "test": "react-scripts test",
     "test:cov": "react-scripts test --coverage",
     "test:debug": "react-scripts --inspect-brk test --runInBand",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy:staging": "aws s3 sync build/ s3://otg-admin-staging"
   },
   "browserslist": [
     ">0.2%",
