@@ -4,7 +4,6 @@ import { Container } from 'reactstrap';
 import {
   AppAside,
   AppBreadcrumb,
-  AppFooter,
   AppHeader,
   AppSidebar,
   AppSidebarFooter,
@@ -20,7 +19,6 @@ import navigation from '../../_nav';
 import routes from '../../routes';
 
 const DefaultAside = React.lazy(() => import('./DefaultAside'));
-const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
 class DefaultLayout extends Component {
@@ -28,6 +26,7 @@ class DefaultLayout extends Component {
 
   signOut(e) {
     e.preventDefault();
+    // TODO: redux action
     this.props.history.push('/login');
   }
 
@@ -39,6 +38,7 @@ class DefaultLayout extends Component {
             <DefaultHeader onLogout={e => this.signOut(e)} />
           </Suspense>
         </AppHeader>
+
         <div className="app-body">
           <AppSidebar fixed display="lg">
             <AppSidebarHeader />
@@ -49,8 +49,10 @@ class DefaultLayout extends Component {
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
+
           <main className="main">
             <AppBreadcrumb appRoutes={routes} />
+
             <Container fluid>
               <Suspense fallback={this.loading()}>
                 <Switch>
@@ -70,17 +72,13 @@ class DefaultLayout extends Component {
               </Suspense>
             </Container>
           </main>
+
           <AppAside fixed>
             <Suspense fallback={this.loading()}>
               <DefaultAside />
             </Suspense>
           </AppAside>
         </div>
-        <AppFooter>
-          <Suspense fallback={this.loading()}>
-            <DefaultFooter />
-          </Suspense>
-        </AppFooter>
       </div>
     );
   }
