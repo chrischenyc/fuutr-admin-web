@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import Loadable from 'react-loadable';
 
 import store from './store';
+import requireAuth from './containers/requireAuth/requireAuth';
 
 import './App.scss';
 
@@ -11,23 +12,23 @@ const loading = () => <div className="animated fadeIn pt-3 text-center">Loading.
 
 // Containers
 const DefaultLayout = Loadable({
-  loader: () => import('./containers/DefaultLayout'),
+  loader: () => import('./containers/DefaultLayout/DefaultLayout'),
   loading,
 });
 
 // Pages
 const Login = Loadable({
-  loader: () => import('./views/Pages/Login'),
+  loader: () => import('./views/Login/Login'),
   loading,
 });
 
 const Page404 = Loadable({
-  loader: () => import('./views/Pages/Page404'),
+  loader: () => import('./views/Page404/Page404'),
   loading,
 });
 
 const Page500 = Loadable({
-  loader: () => import('./views/Pages/Page500'),
+  loader: () => import('./views/Page500/Page500'),
   loading,
 });
 
