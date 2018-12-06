@@ -53,7 +53,8 @@
     "test:debug": "react-scripts --inspect-brk test --runInBand",
     "eject": "react-scripts eject",
     "predeploy:staging": "npm run build",
-    "deploy:staging": "aws s3 sync build/ s3://otg-admin-staging"
+    "deploy:staging": "aws s3 sync build/ s3://otg-admin-staging --delete",
+    "postdeploy:staging": "aws cloudfront create-invalidation --distribution-id EQW8XGWBLY4EO --paths '/*'"
   },
   "browserslist": [
     ">0.2%",
