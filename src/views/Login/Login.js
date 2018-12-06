@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
+import { Formik } from 'formik';
+import * as yup from 'yup';
 
 import {
-  Button,
-  Card,
-  CardBody,
-  CardGroup,
-  Col,
-  Container,
-  Form,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Row,
+  Card, CardBody, CardGroup, Col, Container, Row,
 } from 'reactstrap';
 
+import LoginForm from './LoginForm';
+
 class Login extends Component {
+  handleEmailSignIn() {
+    console.log('login');
+  }
+
   render() {
     return (
       <div className="app flex-row align-items-center">
@@ -25,37 +22,28 @@ class Login extends Component {
               <CardGroup>
                 <Card className="p-4">
                   <CardBody>
-                    <Form>
-                      <h1>OTG Ride Admin</h1>
-                      <p className="text-muted">Sign In with your OTG Ride account</p>
-                      <InputGroup className="mb-3">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="icon-user" />
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="text" placeholder="Username" autoComplete="username" />
-                      </InputGroup>
-                      <InputGroup className="mb-4">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="icon-lock" />
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input
-                          type="password"
-                          placeholder="Password"
-                          autoComplete="current-password"
-                        />
-                      </InputGroup>
-                      <Row>
-                        <Col xs="12">
-                          <Button color="primary" className="px-4">
-                            Login
-                          </Button>
-                        </Col>
-                      </Row>
-                    </Form>
+                    <Formik
+                      render={LoginForm}
+                      initialValues={{ email: '', password: '' }}
+                      validationSchema={yup.object().shape({
+                        email: yup
+                          .string()
+                          .email()
+                          .required(),
+                        password: yup
+                          .string()
+                          .min(6)
+                          .required(),
+                      })}
+                      onSubmit={(values, { setSubmitting, setErrors }) => {
+                        setTimeout(() => {
+                          setSubmitting(false);
+                          setErrors({
+                            message: 'API not integrated',
+                          });
+                        }, 4000);
+                      }}
+                    />
                   </CardBody>
                 </Card>
               </CardGroup>
