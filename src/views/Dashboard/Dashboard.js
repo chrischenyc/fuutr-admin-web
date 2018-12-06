@@ -23,10 +23,10 @@ const brandDanger = getStyle('--danger');
 
 // Card Chart 1
 const cardChartData1 = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
   datasets: [
     {
-      label: 'My First dataset',
+      label: 'Vehicles Online',
       backgroundColor: brandPrimary,
       borderColor: 'rgba(255,255,255,.55)',
       data: [65, 59, 84, 84, 51, 55, 40],
@@ -81,13 +81,13 @@ const cardChartOpts1 = {
 
 // Card Chart 2
 const cardChartData2 = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
   datasets: [
     {
-      label: 'My First dataset',
+      label: 'Users online',
       backgroundColor: brandInfo,
       borderColor: 'rgba(255,255,255,.55)',
-      data: [1, 18, 9, 17, 34, 22, 11],
+      data: [10, 18, 19, 17, 34, 22, 31],
     },
   ],
 };
@@ -140,11 +140,11 @@ const cardChartOpts2 = {
 
 // Card Chart 3
 const cardChartData3 = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
   datasets: [
     {
-      label: 'My First dataset',
-      backgroundColor: 'rgba(255,255,255,.2)',
+      label: 'Rides',
+      backgroundColor: brandPrimary,
       borderColor: 'rgba(255,255,255,.55)',
       data: [78, 81, 80, 45, 34, 12, 40],
     },
@@ -163,21 +163,34 @@ const cardChartOpts3 = {
   scales: {
     xAxes: [
       {
-        display: false,
+        gridLines: {
+          color: 'transparent',
+          zeroLineColor: 'transparent',
+        },
+        ticks: {
+          fontSize: 2,
+          fontColor: 'transparent',
+        },
       },
     ],
     yAxes: [
       {
         display: false,
+        ticks: {
+          display: false,
+          min: Math.min.apply(Math, cardChartData3.datasets[0].data) - 5,
+          max: Math.max.apply(Math, cardChartData3.datasets[0].data) + 5,
+        },
       },
     ],
   },
   elements: {
     line: {
-      borderWidth: 2,
+      tension: 0.00001,
+      borderWidth: 1,
     },
     point: {
-      radius: 0,
+      radius: 4,
       hitRadius: 10,
       hoverRadius: 4,
     },
@@ -189,7 +202,7 @@ const cardChartData4 = {
   labels: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
   datasets: [
     {
-      label: 'My First dataset',
+      label: 'Payments',
       backgroundColor: 'rgba(255,255,255,.3)',
       borderColor: 'transparent',
       data: [78, 81, 80, 45, 34, 12, 40, 75, 34, 89, 32, 68, 54, 72, 18, 98],
@@ -209,94 +222,37 @@ const cardChartOpts4 = {
   scales: {
     xAxes: [
       {
-        display: false,
-        barPercentage: 0.6,
+        gridLines: {
+          color: 'transparent',
+          zeroLineColor: 'transparent',
+        },
+        ticks: {
+          fontSize: 2,
+          fontColor: 'transparent',
+        },
       },
     ],
     yAxes: [
       {
         display: false,
-      },
-    ],
-  },
-};
-
-// sparkline charts
-const sparkLineChartData = [
-  {
-    data: [35, 23, 56, 22, 97, 23, 64],
-    label: 'New Clients',
-  },
-  {
-    data: [65, 59, 84, 84, 51, 55, 40],
-    label: 'Recurring Clients',
-  },
-  {
-    data: [35, 23, 56, 22, 97, 23, 64],
-    label: 'Pageviews',
-  },
-  {
-    data: [65, 59, 84, 84, 51, 55, 40],
-    label: 'Organic',
-  },
-  {
-    data: [78, 81, 80, 45, 34, 12, 40],
-    label: 'CTR',
-  },
-  {
-    data: [1, 13, 9, 17, 34, 41, 38],
-    label: 'Bounce Rate',
-  },
-];
-
-const makeSparkLineData = (dataSetNo, variant) => {
-  const dataset = sparkLineChartData[dataSetNo];
-  const data = {
-    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-    datasets: [
-      {
-        backgroundColor: 'transparent',
-        borderColor: variant ? variant : '#c2cfd6',
-        data: dataset.data,
-        label: dataset.label,
-      },
-    ],
-  };
-  return () => data;
-};
-
-const sparklineChartOpts = {
-  tooltips: {
-    enabled: false,
-    custom: CustomTooltips,
-  },
-  responsive: true,
-  maintainAspectRatio: true,
-  scales: {
-    xAxes: [
-      {
-        display: false,
-      },
-    ],
-    yAxes: [
-      {
-        display: false,
+        ticks: {
+          display: false,
+          min: Math.min.apply(Math, cardChartData4.datasets[0].data) - 5,
+          max: Math.max.apply(Math, cardChartData4.datasets[0].data) + 5,
+        },
       },
     ],
   },
   elements: {
     line: {
-      borderWidth: 2,
+      tension: 0.00001,
+      borderWidth: 1,
     },
     point: {
-      radius: 0,
+      radius: 4,
       hitRadius: 10,
       hoverRadius: 4,
-      hoverBorderWidth: 3,
     },
-  },
-  legend: {
-    display: false,
   },
 };
 
@@ -456,6 +412,18 @@ class Dashboard extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col xs="12" sm="6" lg="3">
+            <Card className="text-white bg-primary">
+              <CardBody className="pb-0">
+                <div className="text-value">234</div>
+                <div>Vehicles online</div>
+              </CardBody>
+              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+                <Line data={cardChartData1} options={cardChartOpts1} height={70} />
+              </div>
+            </Card>
+          </Col>
+
+          <Col xs="12" sm="6" lg="3">
             <Card className="text-white bg-info">
               <CardBody className="pb-0">
                 <div className="text-value">823</div>
@@ -470,18 +438,6 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="3">
             <Card className="text-white bg-primary">
               <CardBody className="pb-0">
-                <div className="text-value">234</div>
-                <div>Vehicles online</div>
-              </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData1} options={cardChartOpts1} height={70} />
-              </div>
-            </Card>
-          </Col>
-
-          <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-warning">
-              <CardBody className="pb-0">
                 <div className="text-value">2,823</div>
                 <div>Rides</div>
               </CardBody>
@@ -492,7 +448,7 @@ class Dashboard extends Component {
           </Col>
 
           <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-danger">
+            <Card className="text-white bg-success">
               <CardBody className="pb-0">
                 <div className="text-value">12,823</div>
                 <div>Payments</div>

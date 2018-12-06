@@ -1,89 +1,49 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  Badge,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Nav,
-  NavItem,
-  NavLink,
+  DropdownItem, DropdownMenu, DropdownToggle, Nav,
 } from 'reactstrap';
-import PropTypes from 'prop-types';
-import {
-  AppAsideToggler,
-  AppHeaderDropdown,
-  AppNavbarBrand,
-  AppSidebarToggler,
-} from '@coreui/react';
+import { AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 
 import logo from '../../assets/img/brand/logo.svg';
 
-const propTypes = {
-  children: PropTypes.node,
-};
+const DefaultHeader = props => (
+  <React.Fragment>
+    <AppSidebarToggler className="d-lg-none" display="md" mobile />
 
-const defaultProps = {};
+    <AppNavbarBrand
+      full={{
+        src: logo,
+        width: 89,
+        height: 30,
+        alt: 'Logo',
+      }}
+      minimized={{
+        src: logo,
+        width: 30,
+        height: 30,
+        alt: 'Logo',
+      }}
+    />
 
-class DefaultHeader extends Component {
-  render() {
-    const { children } = this.props;
+    <AppSidebarToggler className="d-md-down-none" display="lg" />
 
-    return (
-      <React.Fragment>
-        <AppSidebarToggler className="d-lg-none" display="md" mobile />
+    <Nav className="ml-auto" navbar>
+      <AppHeaderDropdown direction="down">
+        <DropdownToggle nav>
+          {/* TODO: real profile name and photo */}
+          Xavier
+          <img src="/assets/img/avatars/default.png" className="img-avatar" alt="avatar" />
+        </DropdownToggle>
 
-        <AppNavbarBrand
-          full={{
-            src: logo,
-            width: 89,
-            height: 25,
-            alt: 'Logo',
-          }}
-          minimized={{
-            src: logo,
-            width: 30,
-            height: 30,
-            alt: 'Logo',
-          }}
-        />
-
-        <AppSidebarToggler className="d-md-down-none" display="lg" />
-
-        <Nav className="ml-auto" navbar>
-          <NavItem className="d-md-down-none">
-            <NavLink href="#">
-              <i className="icon-bell" />
-              <Badge pill color="danger">
-                5
-              </Badge>
-            </NavLink>
-          </NavItem>
-
-          <AppHeaderDropdown direction="down">
-            <DropdownToggle nav>
-              <img
-                src="../../assets/img/avatars/6.jpg"
-                className="img-avatar"
-                alt="admin@bootstrapmaster.com"
-              />
-            </DropdownToggle>
-
-            <DropdownMenu right style={{ right: 'auto' }}>
-              <DropdownItem onClick={e => this.props.onLogout(e)}>
-                <i className="fa fa-lock" />
-                {' '}
-Logout
-              </DropdownItem>
-            </DropdownMenu>
-          </AppHeaderDropdown>
-        </Nav>
-        <AppAsideToggler className="d-md-down-none" />
-      </React.Fragment>
-    );
-  }
-}
-
-DefaultHeader.propTypes = propTypes;
-DefaultHeader.defaultProps = defaultProps;
+        <DropdownMenu right style={{ right: 'auto' }}>
+          <DropdownItem onClick={e => props.onLogout(e)}>
+            <i className="fa fa-lock" />
+            Logout
+          </DropdownItem>
+        </DropdownMenu>
+      </AppHeaderDropdown>
+    </Nav>
+  </React.Fragment>
+);
 
 export default DefaultHeader;
