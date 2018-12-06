@@ -30,18 +30,15 @@ class Login extends Component {
                           .string()
                           .email()
                           .required(),
-                        password: yup
-                          .string()
-                          .min(6)
-                          .required(),
+                        password: yup.string().required(),
                       })}
                       onSubmit={(values, { setSubmitting, setErrors }) => {
                         setTimeout(() => {
                           setSubmitting(false);
                           setErrors({
-                            message: 'API not integrated',
+                            form: 'API not integrated',
                           });
-                        }, 4000);
+                        }, 3000);
                       }}
                     />
                   </CardBody>

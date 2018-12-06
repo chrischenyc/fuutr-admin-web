@@ -3,6 +3,7 @@ import {
   Button,
   Col,
   Form,
+  FormText,
   FormFeedback,
   Input,
   InputGroup,
@@ -10,12 +11,13 @@ import {
   InputGroupText,
   Row,
 } from 'reactstrap';
+import { Field } from 'formik';
 import _ from 'lodash';
 
 const LoginForm = ({
-  handleSubmit, errors, isSubmitting, setTouched, touched,
+  handleSubmit, errors, isSubmitting, touched,
 }) => (
-  <Form>
+  <Form onSubmit={handleSubmit}>
     <h1>OTG Ride Admin</h1>
 
     <p className="text-muted">Sign In with your OTG Ride account</p>
@@ -28,11 +30,13 @@ const LoginForm = ({
       </InputGroupAddon>
 
       <Input
+        tag={Field}
         type="email"
         name="email"
         placeholder="Email"
         autoComplete="email"
-        invalid={!_.isEmpty(errors.email)}
+        disabled={isSubmitting}
+        invalid={touched.email && !_.isEmpty(errors.email)}
       />
 
       {touched.email && <FormFeedback>{errors.email}</FormFeedback>}
@@ -46,11 +50,13 @@ const LoginForm = ({
       </InputGroupAddon>
 
       <Input
+        tag={Field}
         type="password"
         name="password"
         placeholder="Password"
         autoComplete="current-password"
-        invalid={!_.isEmpty(errors.password)}
+        disabled={isSubmitting}
+        invalid={touched.password && !_.isEmpty(errors.password)}
       />
 
       {touched.password && <FormFeedback>{errors.password}</FormFeedback>}
@@ -58,19 +64,24 @@ const LoginForm = ({
 
     <Row>
       <Col xs="12">
-        <Button
-          type="submit"
-          color="primary"
-          className="px-4"
-          disabled={isSubmitting}
-          onClick={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-        >
+        <Button type="submit" color="primary" className="px-4" block disabled={isSubmitting}>
           Login
         </Button>
       </Col>
+    </Row>
+
+    <Row>
+      {isSubmitting && (
+        <Col xs="12">
+          <FormText color="muted">logging you in...</FormText>
+        </Col>
+      )}
+
+      {errors.form && (
+        <Col xs="12">
+          <FormText color="danger">{errors.form}</FormText>
+        </Col>
+      )}
     </Row>
   </Form>
 );
