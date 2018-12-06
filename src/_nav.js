@@ -6,7 +6,7 @@ export default {
       icon: 'icon-speedometer',
       badge: {
         variant: 'info',
-        text: 'NEW',
+        text: '8',
       },
     },
     {
@@ -21,7 +21,6 @@ export default {
       name: 'Users',
       url: '/users',
       icon: 'icon-puzzle',
-      children: [],
     },
     {
       name: 'Vehicles',
@@ -56,11 +55,6 @@ export default {
           icon: 'icon-cursor',
         },
       ],
-    },
-    {
-      name: 'Placeholder',
-      url: '/placeholder',
-      icon: 'icon-pie-chart',
     },
   ],
 };
