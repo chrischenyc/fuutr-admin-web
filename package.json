@@ -39,6 +39,7 @@
     "simple-line-icons": "^2.4.1"
   },
   "devDependencies": {
+    "env-cmd": "^8.0.2",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
@@ -52,7 +53,7 @@
     "test:cov": "react-scripts test --coverage",
     "test:debug": "react-scripts --inspect-brk test --runInBand",
     "eject": "react-scripts eject",
-    "predeploy:staging": "npm run build",
+    "predeploy:staging": "env-cmd .env.staging npm run build",
     "deploy:staging": "aws s3 sync build/ s3://otg-admin-staging --delete",
     "postdeploy:staging": "aws cloudfront create-invalidation --distribution-id EQW8XGWBLY4EO --paths '/*'"
   },
