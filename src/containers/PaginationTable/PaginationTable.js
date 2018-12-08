@@ -18,6 +18,13 @@ class PaginationTable extends Component {
     this.handleSelectPage = this.handleSelectPage.bind(this);
   }
 
+  componentDidMount() {
+    const { page, search } = this.state;
+    const { loadItemsForPage } = this.props;
+
+    loadItemsForPage(page, search);
+  }
+
   handlePrevPage() {
     const { page, search } = this.state;
     const { loadItemsForPage } = this.props;
@@ -65,7 +72,7 @@ class PaginationTable extends Component {
               this.handleSelectPage(index);
             }}
           >
-            {index}
+            {index + 1}
           </PaginationLink>
         </PaginationItem>,
       );
@@ -98,8 +105,8 @@ class PaginationTable extends Component {
           <tbody>{items.map(rowComponent)}</tbody>
         </Table>
 
-        <Pagination>
-          {pages > 0 && (
+        {pages > 1 && (
+          <Pagination>
             <PaginationItem>
               <PaginationLink
                 previous
@@ -108,11 +115,9 @@ class PaginationTable extends Component {
                 onClick={this.handlePrevPage}
               />
             </PaginationItem>
-          )}
 
-          {paginationItems}
+            {paginationItems}
 
-          {pages > 0 && (
             <PaginationItem>
               <PaginationLink
                 next
@@ -121,8 +126,8 @@ class PaginationTable extends Component {
                 onClick={this.handleNextPage}
               />
             </PaginationItem>
-          )}
-        </Pagination>
+          </Pagination>
+        )}
       </Fragment>
     );
   }
