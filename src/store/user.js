@@ -12,17 +12,11 @@ export function userSignedOut() {
   };
 }
 
-export function userProfileFetched(profile) {
-  return {
-    type: 'USER_PROFILE_FETCHED',
-    profile,
-  };
-}
-
 // --------- reducer ----------
 const defaultState = {
   authenticated: false,
-  profile: {},
+  accessToken: null,
+  refreshToken: null,
 };
 
 const reducer = (state = defaultState, action) => {
@@ -32,21 +26,13 @@ const reducer = (state = defaultState, action) => {
 
       return {
         ...state,
+        ...user,
         authenticated: user && true,
       };
     }
 
     case 'USER_SIGNED_OUT': {
-      return { ...defaultState, authenticated: false };
-    }
-
-    case 'USER_PROFILE_FETCHED': {
-      const { profile } = action;
-
-      return {
-        ...state,
-        profile,
-      };
+      return defaultState;
     }
 
     default:
