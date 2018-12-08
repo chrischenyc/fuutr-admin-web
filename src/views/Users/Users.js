@@ -1,69 +1,96 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Row,
+  Table,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+} from 'reactstrap';
 
-import usersData from './UsersData'
+import usersData from './UsersData';
+import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 
-function UserRow(props) {
-  const user = props.user
-  const userLink = `/users/${user.id}`
+const UsersHeader = () => (
+  <tr>
+    <th scope="col">id</th>
+    <th scope="col">name</th>
+    <th scope="col">email</th>
+    <th scope="col">phone</th>
+    <th scope="col">registered</th>
+  </tr>
+);
 
-  const getBadge = (status) => {
-    return status === 'Active' ? 'success' :
-      status === 'Inactive' ? 'secondary' :
-        status === 'Pending' ? 'warning' :
-          status === 'Banned' ? 'danger' :
-            'primary'
-  }
+const UserRow = (user) => {
+  const userLink = `/users/${user.id}`;
 
   return (
     <tr key={user.id.toString()}>
-      <th scope="row"><Link to={userLink}>{user.id}</Link></th>
-      <td><Link to={userLink}>{user.name}</Link></td>
+      <th scope="row">
+        <Link to={userLink}>{user.id}</Link>
+      </th>
+      <td>
+        <Link to={userLink}>{user.name}</Link>
+      </td>
+      <td>tbd</td>
+      <td>tbd</td>
       <td>{user.registered}</td>
-      <td>{user.role}</td>
-      <td><Link to={userLink}><Badge color={getBadge(user.status)}>{user.status}</Badge></Link></td>
     </tr>
-  )
-}
+  );
+};
 
 class Users extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      users: [],
+      total: usersData.length,
+    };
+
+    this.loadUsers = this.loadUsers.bind(this);
+  }
+
+  componentDidMount() {
+    this.loadUsers();
+  }
+
+  loadUsers() {
+    this.setState({ users: usersData });
+  }
 
   render() {
-
-    const userList = usersData.filter((user) => user.id < 10)
-
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col xl={6}>
+          <Col>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Users <small className="text-muted">example</small>
+                <i className="fa fa-align-justify" />
+                Users
               </CardHeader>
+
               <CardBody>
-                <Table responsive hover>
-                  <thead>
-                    <tr>
-                      <th scope="col">id</th>
-                      <th scope="col">name</th>
-                      <th scope="col">registered</th>
-                      <th scope="col">role</th>
-                      <th scope="col">status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {userList.map((user, index) =>
-                      <UserRow key={index} user={user}/>
-                    )}
-                  </tbody>
-                </Table>
+                <PaginationTable
+                  total={this.state.total}
+                  items={this.state.users}
+                  onLoadItemsForPage={this.loadUsers}
+                  onReloadItems={(page, limit, search) => {
+                    this.loadUsers();
+                  }}
+                  headerComponent={UsersHeader}
+                  rowComponent={UserRow}
+                />
               </CardBody>
             </Card>
           </Col>
         </Row>
       </div>
-    )
+    );
   }
 }
 
