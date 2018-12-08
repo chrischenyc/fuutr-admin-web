@@ -30,9 +30,12 @@ const DefaultHeader = props => (
     <Nav className="ml-auto" navbar>
       <AppHeaderDropdown direction="down">
         <DropdownToggle nav>
-          {/* TODO: real profile name and photo */}
-          Xavier
-          <img src="/assets/img/avatars/default.png" className="img-avatar" alt="avatar" />
+          {props.user.displayName}
+          <img
+            src={props.user.photo || '/assets/img/avatars/default.png'}
+            className="img-avatar"
+            alt="avatar"
+          />
         </DropdownToggle>
 
         <DropdownMenu right style={{ right: 'auto' }}>
