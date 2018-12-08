@@ -33,6 +33,7 @@
     "react/prop-types": "error",
     "react/react-in-jsx-scope": "error",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "react/destructuring-assignment": ["off", "never"]
+    "react/destructuring-assignment": ["off", "never"],
+    "no-underscore-dangle": ["error", { "allow": ["_id"] }]
   }
 }

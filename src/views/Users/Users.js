@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Card, CardBody, CardHeader, Col, Row,
+  Card, CardBody, CardHeader, CardFooter, Col, Row, Alert,
 } from 'reactstrap';
+import _ from 'lodash';
 
 import PaginationTable from '../../containers/PaginationTable/PaginationTable';
+import { API, normalizedAPIError } from '../../api';
 
 const UsersHeader = () => (
   <tr>
@@ -12,24 +14,30 @@ const UsersHeader = () => (
     <th scope="col">name</th>
     <th scope="col">email</th>
     <th scope="col">phone</th>
+    <th scope="col">balance</th>
     <th scope="col">registered</th>
   </tr>
 );
 
 const UserRow = (user) => {
-  const userLink = `/users/${user.id}`;
+  const {
+    _id, displayName, email, countryCode, phoneNumber, balance, createdAt,
+  } = user;
+
+  const userLink = `/users/${_id}`;
 
   return (
-    <tr key={user.id.toString()}>
-      <th scope="row">
-        <Link to={userLink}>{user.id}</Link>
-      </th>
+    <tr key={_id}>
       <td>
-        <Link to={userLink}>{user.name}</Link>
+        <Link to={userLink}>{_id}</Link>
       </td>
-      <td>tbd</td>
-      <td>tbd</td>
-      <td>{user.registered}</td>
+      <td>
+        <Link to={userLink}>{displayName}</Link>
+      </td>
+      <td>{email}</td>
+      <td>{`${countryCode || ''} ${phoneNumber || ''}`}</td>
+      <td>{balance}</td>
+      <td>{createdAt}</td>
     </tr>
   );
 };
@@ -41,16 +49,27 @@ class Users extends Component {
     this.state = {
       users: [],
       pages: 0,
+      errors: {},
     };
 
     this.loadUsers = this.loadUsers.bind(this);
   }
 
-  componentDidMount() {
-    this.loadUsers();
-  }
+  async loadUsers(page, search) {
+    try {
+      const response = await API({
+        params: { page, search },
+        method: 'get',
+        url: '/users',
+      });
 
-  loadUsers(page, search) {}
+      const { users, pages } = response.data;
+
+      this.setState({ users, pages });
+    } catch (error) {
+      this.setState({ errors: normalizedAPIError(error) });
+    }
+  }
 
   render() {
     return (
@@ -65,6 +84,7 @@ class Users extends Component {
 
               <CardBody>
                 <PaginationTable
+                  searchPlaceholder="search for first name, last name, email, or phone number"
                   items={this.state.users}
                   pages={this.state.pages}
                   loadItemsForPage={this.loadUsers}
@@ -72,6 +92,12 @@ class Users extends Component {
                   rowComponent={UserRow}
                 />
               </CardBody>
+
+              <CardFooter>
+                {!_.isEmpty(this.state.errors.message) && (
+                  <Alert color="danger">{this.state.errors.message}</Alert>
+                )}
+              </CardFooter>
             </Card>
           </Col>
         </Row>
