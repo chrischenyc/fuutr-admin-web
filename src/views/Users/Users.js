@@ -1,18 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Card,
-  CardBody,
-  CardHeader,
-  Col,
-  Row,
-  Table,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
+  Card, CardBody, CardHeader, Col, Row,
 } from 'reactstrap';
 
-import usersData from './UsersData';
 import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 
 const UsersHeader = () => (
@@ -49,7 +40,7 @@ class Users extends Component {
 
     this.state = {
       users: [],
-      total: usersData.length,
+      pages: 0,
     };
 
     this.loadUsers = this.loadUsers.bind(this);
@@ -59,9 +50,7 @@ class Users extends Component {
     this.loadUsers();
   }
 
-  loadUsers() {
-    this.setState({ users: usersData });
-  }
+  loadUsers(page, search) {}
 
   render() {
     return (
@@ -76,12 +65,9 @@ class Users extends Component {
 
               <CardBody>
                 <PaginationTable
-                  total={this.state.total}
                   items={this.state.users}
-                  onLoadItemsForPage={this.loadUsers}
-                  onReloadItems={(page, limit, search) => {
-                    this.loadUsers();
-                  }}
+                  pages={this.state.pages}
+                  loadItemsForPage={this.loadUsers}
                   headerComponent={UsersHeader}
                   rowComponent={UserRow}
                 />

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Table, Pagination, PaginationItem, PaginationLink, Input,
+  Table, Pagination, PaginationItem, PaginationLink, Input, Row, Col,
 } from 'reactstrap';
 
 class PaginationTable extends Component {
@@ -10,68 +10,87 @@ class PaginationTable extends Component {
 
     this.state = {
       page: 0,
-      limit: 15,
       search: '',
     };
 
-    this.reloadItems = this.reloadItems.bind(this);
-    this.handlePrev = this.handlePrev.bind(this);
-    this.handleNext = this.handleNext.bind(this);
+    this.handlePrevPage = this.handlePrevPage.bind(this);
+    this.handleNextPage = this.handleNextPage.bind(this);
+    this.handleSelectPage = this.handleSelectPage.bind(this);
   }
 
-  componentDidMount() {
-    this.reloadItems();
-  }
-
-  handlePrev() {
-    const { page, limit, search } = this.state;
-    const { onLoadItemsForPage } = this.props;
+  handlePrevPage() {
+    const { page, search } = this.state;
+    const { loadItemsForPage } = this.props;
 
     if (page > 0) {
       this.setState({ page: page - 1 });
-      onLoadItemsForPage(page - 1, limit, search);
+      loadItemsForPage(page - 1, search);
     }
   }
 
-  handleNext() {
-    const { page, limit, search } = this.state;
-    const { total, onLoadItemsForPage } = this.props;
+  handleNextPage() {
+    const { page, search } = this.state;
+    const { pages, loadItemsForPage } = this.props;
 
-    if ((page + 1) * limit < total) {
+    if (page + 1 < pages) {
       this.setState({ page: page + 1 });
-      onLoadItemsForPage(page + 1, limit, search);
+      loadItemsForPage(page + 1, search);
     }
   }
 
-  reloadItems() {
-    const { limit, search } = this.state;
-    const { onReloadItems } = this.props;
+  handleSelectPage(page) {
+    const { search } = this.state;
+    const { pages, loadItemsForPage } = this.props;
 
-    this.setState({ page: 0 });
-
-    onReloadItems(0, limit, search);
+    if (page < pages) {
+      this.setState({ page });
+      loadItemsForPage(page, search);
+    }
   }
 
   render() {
     const {
-      items, headerComponent, rowComponent, total, searchPlaceholder,
+      items, headerComponent, rowComponent, pages, searchPlaceholder,
     } = this.props;
 
-    const { page, limit } = this.state;
+    const { page } = this.state;
+
+    const paginationItems = [];
+    for (let index = 0; index < pages; index += 1) {
+      paginationItems.push(
+        <PaginationItem active={index === page}>
+          <PaginationLink
+            tag="button"
+            onClick={() => {
+              this.handleSelectPage(index);
+            }}
+          >
+            {index}
+          </PaginationLink>
+        </PaginationItem>,
+      );
+    }
 
     return (
       <Fragment>
-        <Input
-          placeholder={searchPlaceholder}
-          input={{ size: '40' }}
-          onChange={(event) => {
-            const search = event.target.value;
-            this.setState({ search });
-            setTimeout(() => {
-              this.reloadItems();
-            }, 500);
-          }}
-        />
+        <Row>
+          <Col lg="4">
+            <Input
+              placeholder={searchPlaceholder}
+              onChange={(event) => {
+                const search = event.target.value;
+                this.setState({ search });
+
+                setTimeout(() => {
+                  this.setState({ page: 0 });
+                  this.props.loadItemsForPage(0, search);
+                }, 500);
+              }}
+            />
+          </Col>
+        </Row>
+
+        <br />
 
         <Table responsive hover>
           <thead>{headerComponent()}</thead>
@@ -80,26 +99,29 @@ class PaginationTable extends Component {
         </Table>
 
         <Pagination>
-          <PaginationItem>
-            <PaginationLink previous tag="button" disabled={page === 0} onClick={this.handlePrev} />
-          </PaginationItem>
+          {pages > 0 && (
+            <PaginationItem>
+              <PaginationLink
+                previous
+                tag="button"
+                disabled={page === 0}
+                onClick={this.handlePrevPage}
+              />
+            </PaginationItem>
+          )}
 
-          <PaginationItem active>
-            <PaginationLink tag="button">1</PaginationLink>
-          </PaginationItem>
+          {paginationItems}
 
-          <PaginationItem>
-            <PaginationLink tag="button">2</PaginationLink>
-          </PaginationItem>
-
-          <PaginationItem>
-            <PaginationLink
-              next
-              tag="button"
-              disabled={(page + 1) * limit >= total}
-              onClick={this.handleNext}
-            />
-          </PaginationItem>
+          {pages > 0 && (
+            <PaginationItem>
+              <PaginationLink
+                next
+                tag="button"
+                disabled={page + 1 >= pages}
+                onClick={this.handleNextPage}
+              />
+            </PaginationItem>
+          )}
         </Pagination>
       </Fragment>
     );
@@ -107,15 +129,13 @@ class PaginationTable extends Component {
 }
 
 PaginationTable.defaultProps = {
-  total: 0,
   searchPlaceholder: 'search for first name, last name, or email',
 };
 
 PaginationTable.propTypes = {
-  total: PropTypes.number,
+  pages: PropTypes.number.isRequired,
   items: PropTypes.array.isRequired,
-  onReloadItems: PropTypes.func.isRequired,
-  onLoadItemsForPage: PropTypes.func.isRequired,
+  loadItemsForPage: PropTypes.func.isRequired,
   headerComponent: PropTypes.func.isRequired,
   rowComponent: PropTypes.func.isRequired,
   searchPlaceholder: PropTypes.string,
