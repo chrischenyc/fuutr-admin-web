@@ -77,9 +77,9 @@ const LoginForm = ({
         </Col>
       )}
 
-      {errors.form && (
+      {errors.message && (
         <Col xs="12">
-          <FormText color="danger">{errors.form}</FormText>
+          <FormText color="danger">{errors.message}</FormText>
         </Col>
       )}
     </Row>
