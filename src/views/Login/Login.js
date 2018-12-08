@@ -36,6 +36,7 @@ class Login extends Component {
       setSubmitting(false);
 
       this.props.userSignedIn(response.data);
+
       this.setState({ redirectToReferrer: true });
     } catch (error) {
       setSubmitting(false);
