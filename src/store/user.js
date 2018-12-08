@@ -1,5 +1,3 @@
-import { API } from '../api';
-
 // --------- actions ----------
 export function userSignedIn(user) {
   return {
@@ -26,8 +24,6 @@ const reducer = (state = defaultState, action) => {
     case 'USER_SIGNED_IN': {
       const { user } = action;
 
-      API.defaults.headers.common.Authorization = `bearer ${user.accessToken}`;
-
       return {
         ...state,
         ...user,
@@ -36,8 +32,6 @@ const reducer = (state = defaultState, action) => {
     }
 
     case 'USER_SIGNED_OUT': {
-      delete API.defaults.headers.common.Authorization;
-
       return defaultState;
     }
 
