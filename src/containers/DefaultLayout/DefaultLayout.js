@@ -11,11 +11,14 @@ import {
   AppSidebarMinimizer,
   AppSidebarNav,
 } from '@coreui/react';
+import { connect } from 'react-redux';
 
 // sidebar nav config
 import navigation from '../../_nav';
 // routes config
 import routes from '../../routes';
+
+import { userSignedOut } from '../../store/user';
 
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
@@ -24,7 +27,7 @@ class DefaultLayout extends Component {
 
   signOut(e) {
     e.preventDefault();
-    // TODO: redux action
+    this.props.userSignedOut();
     this.props.history.push('/login');
   }
 
@@ -76,4 +79,13 @@ class DefaultLayout extends Component {
   }
 }
 
-export default DefaultLayout;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.user,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { userSignedOut },
+)(DefaultLayout);
