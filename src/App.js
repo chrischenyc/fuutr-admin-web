@@ -27,11 +27,6 @@ const Page404 = Loadable({
   loading,
 });
 
-const Page500 = Loadable({
-  loader: () => import('./views/Page500/Page500'),
-  loading,
-});
-
 class App extends Component {
   render() {
     return (
@@ -40,7 +35,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/login" component={Login} />
             <Route exact path="/404" component={Page404} />
-            <Route exact path="/500" component={Page500} />
+
             <AuthenticateRoute path="/" component={DefaultLayout} />
           </Switch>
         </Router>

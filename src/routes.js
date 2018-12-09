@@ -11,7 +11,7 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
 
   { path: '/users', exact: true, name: 'Users', component: Users },
-  { path: '/users/:id', exact: true, name: 'User Details', component: User },
+  { path: '/users/:_id', exact: true, name: 'User Details', component: User },
 ];
 
 export default routes;

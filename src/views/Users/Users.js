@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Card, CardBody, CardHeader, CardFooter, Col, Row, Alert, Badge,
+  Card, CardBody, CardHeader, CardFooter, Col, Row, Alert,
 } from 'reactstrap';
 import _ from 'lodash';
 
 import PaginationTable from '../../containers/PaginationTable/PaginationTable';
+import RoleBadge from '../../components/role-badge';
 import { API, normalizedAPIError } from '../../api';
 import { dateString } from '../../utils/format-date';
 import formatPrice from '../../utils/format-price';
@@ -21,15 +22,6 @@ const UsersHeader = () => (
     <th scope="col">role</th>
   </tr>
 );
-
-const roleBadge = (user) => {
-  const { isAdmin } = user;
-
-  if (isAdmin) {
-    return <Badge color="danger">Admin</Badge>;
-  }
-  return <Badge color="success">User</Badge>;
-};
 
 const UserRow = (user) => {
   const {
@@ -50,7 +42,9 @@ const UserRow = (user) => {
       <td>{`${countryCode || ''} ${phoneNumber || ''}`}</td>
       <td>{formatPrice(balance)}</td>
       <td>{dateString(createdAt)}</td>
-      <td>{roleBadge(user)}</td>
+      <td>
+        <RoleBadge user={user} />
+      </td>
     </tr>
   );
 };

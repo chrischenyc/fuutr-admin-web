@@ -1,45 +1,108 @@
 import React, { Component } from 'react';
 import {
-  Card, CardBody, CardHeader, Col, Row, Table,
+  Card, CardBody, CardHeader, Col, Row, Table, Alert,
 } from 'reactstrap';
+import _ from 'lodash';
+
+import RoleBadge from '../../components/role-badge';
+
+import { API, normalizedAPIError } from '../../api';
+import { dateString } from '../../utils/format-date';
+import formatPrice from '../../utils/format-price';
 
 class User extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { user: null, errors: {} };
+
+    this.loadUser = this.loadUser.bind(this);
+  }
+
+  componentDidMount() {
+    this.loadUser();
+  }
+
+  async loadUser() {
+    const { _id } = this.props.match.params;
+
+    try {
+      const response = await API({ method: 'get', url: `/users/${_id}` });
+      const { data: user } = response;
+      this.setState({ user });
+    } catch (error) {
+      this.setState({ errors: normalizedAPIError(error) });
+    }
+  }
+
   render() {
-    const userDetails = [
-      [
-        'id',
-        <span>
-          <i className="text-muted icon-ban" />
-          Not found
-        </span>,
-      ],
-    ];
+    const { user, errors } = this.state;
+
+    if (!_.isEmpty(errors.message)) {
+      return <Alert color="danger">{errors.message}</Alert>;
+    }
+
+    if (!user) {
+      return '';
+    }
+
+    const {
+      _id, displayName, email, countryCode, phoneNumber, balance, createdAt, photo,
+    } = user;
 
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col lg={6}>
+          <Col lg={10}>
             <Card>
               <CardHeader>
                 <strong>
                   <i className="icon-info pr-1" />
                   User id:
-                  {this.props.match.params.id}
+                  {_id}
                 </strong>
+                &nbsp;
+                <RoleBadge user={user} />
               </CardHeader>
+
               <CardBody>
-                <Table responsive striped hover>
+                <Table responsive striped>
                   <tbody>
-                    {userDetails.map(([key, value]) => (
-                      <tr key={key}>
-                        <td>{`${key}:`}</td>
-                        <td>
-                          <strong>{value}</strong>
-                        </td>
-                      </tr>
-                    ))}
+                    <tr>
+                      <th>Name</th>
+                      <td>{displayName}</td>
+                    </tr>
+                    <tr>
+                      <th>Email</th>
+                      <td>{email}</td>
+                    </tr>
+                    <tr>
+                      <th>Phone</th>
+                      <td>{`${countryCode || ''} ${phoneNumber || ''}`}</td>
+                    </tr>
+                    <tr>
+                      <th>Balance</th>
+                      <td>{formatPrice(balance)}</td>
+                    </tr>
+                    <tr>
+                      <th>Joined</th>
+                      <td>{dateString(createdAt)}</td>
+                    </tr>
                   </tbody>
                 </Table>
+              </CardBody>
+            </Card>
+          </Col>
+
+          <Col lg={2}>
+            <Card>
+              <CardHeader>Photo</CardHeader>
+              <CardBody>
+                <img
+                  src={photo || '/assets/img/avatars/default.png'}
+                  className="img-avatar"
+                  alt="avatar"
+                />
               </CardBody>
             </Card>
           </Col>
