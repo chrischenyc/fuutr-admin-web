@@ -15,8 +15,6 @@ export function userSignedOut() {
 // --------- reducer ----------
 const defaultState = {
   authenticated: false,
-  accessToken: null,
-  refreshToken: null,
 };
 
 const reducer = (state = defaultState, action) => {
