@@ -55,6 +55,34 @@ const RideRow = (ride) => {
   );
 };
 
+const PaymentHeader = () => (
+  <tr>
+    <th scope="col">id</th>
+    <th scope="col">amount</th>
+    <th scope="col">description</th>
+    <th scope="col">time</th>
+  </tr>
+);
+
+const PaymentRow = (payment) => {
+  const {
+    _id, amount, description, createdAt,
+  } = payment;
+
+  const paymentLink = `/payments/${_id}`;
+
+  return (
+    <tr key={_id}>
+      <td>
+        <Link to={paymentLink}>{shortenedId(_id)}</Link>
+      </td>
+      <td>{priceString(amount)}</td>
+      <td>{description}</td>
+      <td>{dateTimeString(createdAt)}</td>
+    </tr>
+  );
+};
+
 class User extends Component {
   constructor(props) {
     super(props);
@@ -63,11 +91,14 @@ class User extends Component {
       user: null,
       rides: [],
       ridesPages: 0,
+      payments: [],
+      paymentsPages: 0,
       errors: {},
     };
 
     this.loadUser = this.loadUser.bind(this);
     this.loadRides = this.loadRides.bind(this);
+    this.loadPayments = this.loadPayments.bind(this);
   }
 
   componentDidMount() {
@@ -86,12 +117,12 @@ class User extends Component {
     }
   }
 
-  async loadRides(page, search) {
+  async loadRides(page) {
     const { _id } = this.props.match.params;
 
     try {
       const response = await API({
-        params: { user: _id, page, search },
+        params: { user: _id, page },
         method: 'get',
         url: '/rides',
       });
@@ -104,9 +135,27 @@ class User extends Component {
     }
   }
 
+  async loadPayments(page) {
+    const { _id } = this.props.match.params;
+
+    try {
+      const response = await API({
+        params: { user: _id, page },
+        method: 'get',
+        url: '/payments',
+      });
+
+      const { payments, pages } = response.data;
+
+      this.setState({ payments, paymentsPages: pages });
+    } catch (error) {
+      this.setState({ errors: normalizedAPIError(error) });
+    }
+  }
+
   render() {
     const {
-      user, rides, ridesPages, errors,
+      user, rides, ridesPages, payments, paymentsPages, errors,
     } = this.state;
 
     if (!_.isEmpty(errors.message)) {
@@ -188,6 +237,28 @@ class User extends Component {
                   loadItemsForPage={this.loadRides}
                   headerComponent={RidesHeader}
                   rowComponent={RideRow}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* user's payments */}
+        <Row>
+          <Col lg={10}>
+            <Card>
+              <CardHeader>
+                <strong>Payments</strong>
+              </CardHeader>
+
+              <CardBody>
+                <PaginationTable
+                  searchable={false}
+                  items={payments}
+                  pages={paymentsPages}
+                  loadItemsForPage={this.loadPayments}
+                  headerComponent={PaymentHeader}
+                  rowComponent={PaymentRow}
                 />
               </CardBody>
             </Card>
