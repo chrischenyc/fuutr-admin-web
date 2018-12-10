@@ -10,6 +10,7 @@ import RoleBadge from '../../components/role-badge';
 import { API, normalizedAPIError } from '../../api';
 import { dateString } from '../../utils/format-date';
 import priceString from '../../utils/format-price';
+import { shortenedId } from '../../utils/trunc-string';
 
 const UsersHeader = () => (
   <tr>
@@ -33,7 +34,7 @@ const UserRow = (user) => {
   return (
     <tr key={_id}>
       <td>
-        <Link to={userLink}>{_id}</Link>
+        <Link to={userLink}>{shortenedId(_id)}</Link>
       </td>
       <td>
         <Link to={userLink}>{displayName}</Link>
