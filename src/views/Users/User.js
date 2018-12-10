@@ -14,6 +14,7 @@ import { dateString } from '../../utils/format-date';
 import durationString from '../../utils/format-duration';
 import priceString from '../../utils/format-price';
 import distanceString from '../../utils/format-distance';
+import { shortenedId } from '../../utils/trunc-string';
 
 const RidesHeader = () => (
   <tr>
@@ -38,10 +39,10 @@ const RideRow = (ride) => {
   return (
     <tr key={_id}>
       <td>
-        <Link to={rideLink}>{_id}</Link>
+        <Link to={rideLink}>{shortenedId(_id)}</Link>
       </td>
       <td>
-        <Link to={vehicleLink}>{scooter}</Link>
+        <Link to={vehicleLink}>{shortenedId(scooter)}</Link>
       </td>
       <td>{durationString(duration)}</td>
       <td>{distanceString(distance)}</td>
