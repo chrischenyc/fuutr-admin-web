@@ -6,45 +6,54 @@ import _ from 'lodash';
 import { Link } from 'react-router-dom';
 
 import RoleBadge from '../../components/role-badge';
+import VehicleBadge from '../../components/vehicle-status-badge';
 import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 
 import { API, normalizedAPIError } from '../../api';
 import { dateString } from '../../utils/format-date';
-import formatPrice from '../../utils/format-price';
+import durationString from '../../utils/format-duration';
+import priceString from '../../utils/format-price';
+import distanceString from '../../utils/format-distance';
 
 const RidesHeader = () => (
   <tr>
     <th scope="col">id</th>
-    <th scope="col">name</th>
-    <th scope="col">email</th>
-    <th scope="col">phone</th>
-    <th scope="col">balance</th>
-    <th scope="col">registered</th>
-    <th scope="col">role</th>
+    <th scope="col">user</th>
+    <th scope="col">vehicle</th>
+    <th scope="col">duration</th>
+    <th scope="col">distance</th>
+    <th scope="col">total</th>
+    <th scope="col">time</th>
+    <th scope="col">status</th>
   </tr>
 );
 
-const RideRow = (user) => {
+const RideRow = (ride) => {
   const {
-    _id, displayName, email, countryCode, phoneNumber, balance, createdAt,
-  } = user;
+    _id, user, scooter, duration, distance, totalCost, createdAt,
+  } = ride;
 
-  const userLink = `/users/${_id}`;
+  const rideLink = `/rides/${_id}`;
+  const userLink = `/users/${user}`;
+  const vehicleLink = `/vehicle/${scooter}`;
 
   return (
     <tr key={_id}>
       <td>
-        <Link to={userLink}>{_id}</Link>
+        <Link to={rideLink}>{_id}</Link>
       </td>
       <td>
-        <Link to={userLink}>{displayName}</Link>
+        <Link to={userLink}>{user}</Link>
       </td>
-      <td>{email}</td>
-      <td>{`${countryCode || ''} ${phoneNumber || ''}`}</td>
-      <td>{formatPrice(balance)}</td>
+      <td>
+        <Link to={vehicleLink}>{scooter}</Link>
+      </td>
+      <td>{durationString(duration)}</td>
+      <td>{distanceString(distance)}</td>
+      <td>{priceString(totalCost)}</td>
       <td>{dateString(createdAt)}</td>
       <td>
-        <RoleBadge user={user} />
+        <VehicleBadge ride={ride} />
       </td>
     </tr>
   );
@@ -153,7 +162,7 @@ class User extends Component {
                     </tr>
                     <tr>
                       <th>Balance</th>
-                      <td>{formatPrice(balance)}</td>
+                      <td>{priceString(balance)}</td>
                     </tr>
                     <tr>
                       <th>Joined</th>
