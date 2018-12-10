@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 import RoleBadge from '../../components/role-badge';
 import VehicleBadge from '../../components/vehicle-status-badge';
+import TransactionTypeBadge from '../../components/transaction-type-badge';
 import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 
 import { API, normalizedAPIError } from '../../api';
@@ -83,6 +84,34 @@ const PaymentRow = (payment) => {
   );
 };
 
+const TransactionHeader = () => (
+  <tr>
+    <th scope="col">id</th>
+    <th scope="col">time</th>
+    <th scope="col">type</th>
+    <th scope="col">amount</th>
+    <th scope="col">balance</th>
+  </tr>
+);
+
+const TransactionRow = (transaction) => {
+  const {
+    _id, amount, balance, createdAt,
+  } = transaction;
+
+  return (
+    <tr key={_id}>
+      <td>{shortenedId(_id)}</td>
+      <td>{dateTimeString(createdAt)}</td>
+      <td>
+        <TransactionTypeBadge transaction={transaction} />
+      </td>
+      <td>{priceString(amount)}</td>
+      <td>{priceString(balance)}</td>
+    </tr>
+  );
+};
+
 class User extends Component {
   constructor(props) {
     super(props);
@@ -93,12 +122,15 @@ class User extends Component {
       ridesPages: 0,
       payments: [],
       paymentsPages: 0,
+      transactions: [],
+      transactionsPages: 0,
       errors: {},
     };
 
     this.loadUser = this.loadUser.bind(this);
     this.loadRides = this.loadRides.bind(this);
     this.loadPayments = this.loadPayments.bind(this);
+    this.loadTransactions = this.loadTransactions.bind(this);
   }
 
   componentDidMount() {
@@ -153,9 +185,34 @@ class User extends Component {
     }
   }
 
+  async loadTransactions(page) {
+    const { _id } = this.props.match.params;
+
+    try {
+      const response = await API({
+        params: { user: _id, page },
+        method: 'get',
+        url: '/transactions',
+      });
+
+      const { transactions, pages } = response.data;
+
+      this.setState({ transactions, transactionsPages: pages });
+    } catch (error) {
+      this.setState({ errors: normalizedAPIError(error) });
+    }
+  }
+
   render() {
     const {
-      user, rides, ridesPages, payments, paymentsPages, errors,
+      user,
+      rides,
+      ridesPages,
+      payments,
+      paymentsPages,
+      transactions,
+      transactionsPages,
+      errors,
     } = this.state;
 
     if (!_.isEmpty(errors.message)) {
@@ -259,6 +316,28 @@ class User extends Component {
                   loadItemsForPage={this.loadPayments}
                   headerComponent={PaymentHeader}
                   rowComponent={PaymentRow}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* user's transactions */}
+        <Row>
+          <Col lg={10}>
+            <Card>
+              <CardHeader>
+                <strong>Transactions</strong>
+              </CardHeader>
+
+              <CardBody>
+                <PaginationTable
+                  searchable={false}
+                  items={transactions}
+                  pages={transactionsPages}
+                  loadItemsForPage={this.loadTransactions}
+                  headerComponent={TransactionHeader}
+                  rowComponent={TransactionRow}
                 />
               </CardBody>
             </Card>
