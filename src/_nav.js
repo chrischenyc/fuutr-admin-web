@@ -23,9 +23,14 @@ export default {
       icon: 'icon-people',
     },
     {
+      name: 'Rides',
+      url: '/rides',
+      icon: 'icon-speedometer',
+    },
+    {
       name: 'Vehicles',
       url: '/vehicles',
-      icon: 'icon-speedometer',
+      icon: 'icon-cursor',
       children: [
         {
           name: 'online',
@@ -55,6 +60,11 @@ export default {
           icon: 'icon-cursor',
         },
       ],
+    },
+    {
+      name: 'Payments',
+      url: '/payments',
+      icon: 'icon-credit-card',
     },
   ],
 };
