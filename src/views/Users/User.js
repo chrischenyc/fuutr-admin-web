@@ -10,7 +10,7 @@ import VehicleBadge from '../../components/vehicle-status-badge';
 import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 
 import { API, normalizedAPIError } from '../../api';
-import { dateString } from '../../utils/format-date';
+import { dateString, dateTimeString } from '../../utils/format-date';
 import durationString from '../../utils/format-duration';
 import priceString from '../../utils/format-price';
 import distanceString from '../../utils/format-distance';
@@ -47,7 +47,7 @@ const RideRow = (ride) => {
       <td>{durationString(duration)}</td>
       <td>{distanceString(distance)}</td>
       <td>{priceString(totalCost)}</td>
-      <td>{dateString(createdAt)}</td>
+      <td>{dateTimeString(createdAt)}</td>
       <td>
         <VehicleBadge ride={ride} />
       </td>
@@ -123,6 +123,7 @@ class User extends Component {
 
     return (
       <div className="animated fadeIn">
+        {/* user info */}
         <Row>
           <Col lg={10}>
             <Card>
@@ -171,6 +172,7 @@ class User extends Component {
           </Col>
         </Row>
 
+        {/* user's rides */}
         <Row>
           <Col lg={10}>
             <Card>
@@ -180,7 +182,7 @@ class User extends Component {
 
               <CardBody>
                 <PaginationTable
-                  searchPlaceholder="search for date or time"
+                  searchable={false}
                   items={rides}
                   pages={ridesPages}
                   loadItemsForPage={this.loadRides}
