@@ -18,7 +18,6 @@ import distanceString from '../../utils/format-distance';
 const RidesHeader = () => (
   <tr>
     <th scope="col">id</th>
-    <th scope="col">user</th>
     <th scope="col">vehicle</th>
     <th scope="col">duration</th>
     <th scope="col">distance</th>
@@ -30,20 +29,16 @@ const RidesHeader = () => (
 
 const RideRow = (ride) => {
   const {
-    _id, user, scooter, duration, distance, totalCost, createdAt,
+    _id, scooter, duration, distance, totalCost, createdAt,
   } = ride;
 
   const rideLink = `/rides/${_id}`;
-  const userLink = `/users/${user}`;
   const vehicleLink = `/vehicle/${scooter}`;
 
   return (
     <tr key={_id}>
       <td>
         <Link to={rideLink}>{_id}</Link>
-      </td>
-      <td>
-        <Link to={userLink}>{user}</Link>
       </td>
       <td>
         <Link to={vehicleLink}>{scooter}</Link>
