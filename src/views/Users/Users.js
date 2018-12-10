@@ -9,7 +9,7 @@ import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 import RoleBadge from '../../components/role-badge';
 import { API, normalizedAPIError } from '../../api';
 import { dateString } from '../../utils/format-date';
-import formatPrice from '../../utils/format-price';
+import priceString from '../../utils/format-price';
 
 const UsersHeader = () => (
   <tr>
@@ -40,7 +40,7 @@ const UserRow = (user) => {
       </td>
       <td>{email}</td>
       <td>{`${countryCode || ''} ${phoneNumber || ''}`}</td>
-      <td>{formatPrice(balance)}</td>
+      <td>{priceString(balance)}</td>
       <td>{dateString(createdAt)}</td>
       <td>
         <RoleBadge user={user} />
