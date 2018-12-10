@@ -20,12 +20,12 @@ export default {
     {
       name: 'Users',
       url: '/users',
-      icon: 'icon-puzzle',
+      icon: 'icon-people',
     },
     {
       name: 'Vehicles',
       url: '/vehicles',
-      icon: 'icon-cursor',
+      icon: 'icon-speedometer',
       children: [
         {
           name: 'online',
@@ -42,7 +42,7 @@ export default {
     {
       name: 'Zones',
       url: '/zones',
-      icon: 'icon-cursor',
+      icon: 'icon-map',
       children: [
         {
           name: 'non-parking zones',
