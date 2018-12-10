@@ -56,8 +56,13 @@ class User extends Component {
           <Col lg={10}>
             <Card>
               <CardHeader>
+                <img
+                  src={photo || '/assets/img/avatars/default.png'}
+                  className="img"
+                  alt="avatar"
+                  style={{ width: '72px', marginRight: '16px' }}
+                />
                 <strong>
-                  <i className="icon-info pr-1" />
                   User id:
                   {_id}
                 </strong>
@@ -90,19 +95,6 @@ class User extends Component {
                     </tr>
                   </tbody>
                 </Table>
-              </CardBody>
-            </Card>
-          </Col>
-
-          <Col lg={2}>
-            <Card>
-              <CardHeader>Photo</CardHeader>
-              <CardBody>
-                <img
-                  src={photo || '/assets/img/avatars/default.png'}
-                  className="img-avatar"
-                  alt="avatar"
-                />
               </CardBody>
             </Card>
           </Col>
