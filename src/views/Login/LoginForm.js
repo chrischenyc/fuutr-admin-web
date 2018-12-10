@@ -20,7 +20,10 @@ const LoginForm = ({
   <Form onSubmit={handleSubmit}>
     <h1>OTG Ride Admin</h1>
 
-    <p className="text-muted">Sign In with your OTG Ride account</p>
+    <p className="text-muted">
+      Sign In with your OTG Rider account. If you forgot password, please reset it by using OTG
+      Rider app.
+    </p>
 
     <InputGroup className="mb-3">
       <InputGroupAddon addonType="prepend">
