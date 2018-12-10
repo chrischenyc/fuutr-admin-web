@@ -57,7 +57,12 @@ class PaginationTable extends Component {
 
   render() {
     const {
-      items, headerComponent, rowComponent, pages, searchPlaceholder,
+      items,
+      headerComponent,
+      rowComponent,
+      pages,
+      searchable,
+      searchPlaceholder,
     } = this.props;
 
     const { page } = this.state;
@@ -80,24 +85,28 @@ class PaginationTable extends Component {
 
     return (
       <Fragment>
-        <Row>
-          <Col lg="4">
-            <Input
-              placeholder={searchPlaceholder}
-              onChange={(event) => {
-                const search = event.target.value;
-                this.setState({ search });
+        {searchable && (
+          <Fragment>
+            <Row>
+              <Col lg="4">
+                <Input
+                  placeholder={searchPlaceholder}
+                  onChange={(event) => {
+                    const search = event.target.value;
+                    this.setState({ search });
 
-                setTimeout(() => {
-                  this.setState({ page: 0 });
-                  this.props.loadItemsForPage(0, search);
-                }, 500);
-              }}
-            />
-          </Col>
-        </Row>
+                    setTimeout(() => {
+                      this.setState({ page: 0 });
+                      this.props.loadItemsForPage(0, search);
+                    }, 500);
+                  }}
+                />
+              </Col>
+            </Row>
 
-        <br />
+            <br />
+          </Fragment>
+        )}
 
         <Table responsive hover>
           <thead>{headerComponent()}</thead>
@@ -134,6 +143,7 @@ class PaginationTable extends Component {
 }
 
 PaginationTable.defaultProps = {
+  searchable: true,
   searchPlaceholder: 'search for first name, last name, or email',
 };
 
@@ -143,6 +153,7 @@ PaginationTable.propTypes = {
   loadItemsForPage: PropTypes.func.isRequired,
   headerComponent: PropTypes.func.isRequired,
   rowComponent: PropTypes.func.isRequired,
+  searchable: PropTypes.bool,
   searchPlaceholder: PropTypes.string,
 };
 

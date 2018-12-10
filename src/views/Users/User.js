@@ -3,20 +3,66 @@ import {
   Card, CardBody, CardHeader, Col, Row, Table, Alert,
 } from 'reactstrap';
 import _ from 'lodash';
+import { Link } from 'react-router-dom';
 
 import RoleBadge from '../../components/role-badge';
+import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 
 import { API, normalizedAPIError } from '../../api';
 import { dateString } from '../../utils/format-date';
 import formatPrice from '../../utils/format-price';
 
+const RidesHeader = () => (
+  <tr>
+    <th scope="col">id</th>
+    <th scope="col">name</th>
+    <th scope="col">email</th>
+    <th scope="col">phone</th>
+    <th scope="col">balance</th>
+    <th scope="col">registered</th>
+    <th scope="col">role</th>
+  </tr>
+);
+
+const RideRow = (user) => {
+  const {
+    _id, displayName, email, countryCode, phoneNumber, balance, createdAt,
+  } = user;
+
+  const userLink = `/users/${_id}`;
+
+  return (
+    <tr key={_id}>
+      <td>
+        <Link to={userLink}>{_id}</Link>
+      </td>
+      <td>
+        <Link to={userLink}>{displayName}</Link>
+      </td>
+      <td>{email}</td>
+      <td>{`${countryCode || ''} ${phoneNumber || ''}`}</td>
+      <td>{formatPrice(balance)}</td>
+      <td>{dateString(createdAt)}</td>
+      <td>
+        <RoleBadge user={user} />
+      </td>
+    </tr>
+  );
+};
+
 class User extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { user: null, errors: {} };
+    this.state = {
+      user: null,
+      rides: [],
+      ridesPages: 0,
+      errors: {},
+    };
 
     this.loadUser = this.loadUser.bind(this);
+    this.loadRides = this.loadRides.bind(this);
   }
 
   componentDidMount() {
@@ -35,8 +81,28 @@ class User extends Component {
     }
   }
 
+  async loadRides(page, search) {
+    const { _id } = this.props.match.params;
+
+    try {
+      const response = await API({
+        params: { user: _id, page, search },
+        method: 'get',
+        url: '/rides',
+      });
+
+      const { rides, pages } = response.data;
+
+      this.setState({ rides, ridesPages: pages });
+    } catch (error) {
+      this.setState({ errors: normalizedAPIError(error) });
+    }
+  }
+
   render() {
-    const { user, errors } = this.state;
+    const {
+      user, rides, ridesPages, errors,
+    } = this.state;
 
     if (!_.isEmpty(errors.message)) {
       return <Alert color="danger">{errors.message}</Alert>;
@@ -95,6 +161,27 @@ class User extends Component {
                     </tr>
                   </tbody>
                 </Table>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col lg={10}>
+            <Card>
+              <CardHeader>
+                <strong>Rides</strong>
+              </CardHeader>
+
+              <CardBody>
+                <PaginationTable
+                  searchPlaceholder="search for date or time"
+                  items={rides}
+                  pages={ridesPages}
+                  loadItemsForPage={this.loadRides}
+                  headerComponent={RidesHeader}
+                  rowComponent={RideRow}
+                />
               </CardBody>
             </Card>
           </Col>
