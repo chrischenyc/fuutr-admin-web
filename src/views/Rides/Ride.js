@@ -5,340 +5,155 @@ import {
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 
-import RoleBadge from '../../components/role-badge';
-import VehicleBadge from '../../components/vehicle-status-badge';
-import TransactionTypeBadge from '../../components/transaction-type-badge';
-import PaginationTable from '../../containers/PaginationTable/PaginationTable';
+import RideStatusBadge from '../../components/ride-status-badge';
 
 import { API, normalizedAPIError } from '../../api';
-import { dateString, dateTimeString } from '../../utils/format-date';
-import durationString from '../../utils/format-duration';
+import { dateTimeString } from '../../utils/format-date';
 import priceString from '../../utils/format-price';
 import distanceString from '../../utils/format-distance';
-import { shortenedId } from '../../utils/trunc-string';
+import durationString from '../../utils/format-duration';
+import { userLink, vehicleLink, coordinatesMapLink } from '../../utils/links';
 
-const RidesHeader = () => (
-  <tr>
-    <th scope="col">id</th>
-    <th scope="col">vehicle</th>
-    <th scope="col">duration</th>
-    <th scope="col">distance</th>
-    <th scope="col">total</th>
-    <th scope="col">time</th>
-    <th scope="col">status</th>
-  </tr>
-);
-
-const RideRow = (ride) => {
-  const {
-    _id, scooter, duration, distance, totalCost, createdAt,
-  } = ride;
-
-  const rideLink = `/rides/${_id}`;
-  const vehicleLink = `/vehicle/${scooter}`;
-
-  return (
-    <tr key={_id}>
-      <td>
-        <Link to={rideLink}>{shortenedId(_id)}</Link>
-      </td>
-      <td>
-        <Link to={vehicleLink}>{shortenedId(scooter)}</Link>
-      </td>
-      <td>{durationString(duration)}</td>
-      <td>{distanceString(distance)}</td>
-      <td>{priceString(totalCost)}</td>
-      <td>{dateTimeString(createdAt)}</td>
-      <td>
-        <VehicleBadge ride={ride} />
-      </td>
-    </tr>
-  );
-};
-
-const PaymentHeader = () => (
-  <tr>
-    <th scope="col">id</th>
-    <th scope="col">amount</th>
-    <th scope="col">description</th>
-    <th scope="col">time</th>
-  </tr>
-);
-
-const PaymentRow = (payment) => {
-  const {
-    _id, amount, description, createdAt,
-  } = payment;
-
-  const paymentLink = `/payments/${_id}`;
-
-  return (
-    <tr key={_id}>
-      <td>
-        <Link to={paymentLink}>{shortenedId(_id)}</Link>
-      </td>
-      <td>{priceString(amount)}</td>
-      <td>{description}</td>
-      <td>{dateTimeString(createdAt)}</td>
-    </tr>
-  );
-};
-
-const TransactionHeader = () => (
-  <tr>
-    <th scope="col">id</th>
-    <th scope="col">time</th>
-    <th scope="col">type</th>
-    <th scope="col">amount</th>
-    <th scope="col">balance</th>
-  </tr>
-);
-
-const TransactionRow = (transaction) => {
-  const {
-    _id, amount, balance, createdAt,
-  } = transaction;
-
-  return (
-    <tr key={_id}>
-      <td>{shortenedId(_id)}</td>
-      <td>{dateTimeString(createdAt)}</td>
-      <td>
-        <TransactionTypeBadge transaction={transaction} />
-      </td>
-      <td>{priceString(amount)}</td>
-      <td>{priceString(balance)}</td>
-    </tr>
-  );
-};
-
-class User extends Component {
+class Ride extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      user: null,
-      rides: [],
-      ridesPages: 0,
-      payments: [],
-      paymentsPages: 0,
-      transactions: [],
-      transactionsPages: 0,
+      ride: null,
       errors: {},
     };
 
-    this.loadUser = this.loadUser.bind(this);
-    this.loadRides = this.loadRides.bind(this);
-    this.loadPayments = this.loadPayments.bind(this);
-    this.loadTransactions = this.loadTransactions.bind(this);
+    this.loadRide = this.loadRide.bind(this);
   }
 
   componentDidMount() {
-    this.loadUser();
+    this.loadRide();
   }
 
-  async loadUser() {
+  async loadRide() {
     const { _id } = this.props.match.params;
 
     try {
-      const response = await API({ method: 'get', url: `/users/${_id}` });
-      const { data: user } = response;
-      this.setState({ user });
-    } catch (error) {
-      this.setState({ errors: normalizedAPIError(error) });
-    }
-  }
-
-  async loadRides(page) {
-    const { _id } = this.props.match.params;
-
-    try {
-      const response = await API({
-        params: { user: _id, page },
-        method: 'get',
-        url: '/rides',
-      });
-
-      const { rides, pages } = response.data;
-
-      this.setState({ rides, ridesPages: pages });
-    } catch (error) {
-      this.setState({ errors: normalizedAPIError(error) });
-    }
-  }
-
-  async loadPayments(page) {
-    const { _id } = this.props.match.params;
-
-    try {
-      const response = await API({
-        params: { user: _id, page },
-        method: 'get',
-        url: '/payments',
-      });
-
-      const { payments, pages } = response.data;
-
-      this.setState({ payments, paymentsPages: pages });
-    } catch (error) {
-      this.setState({ errors: normalizedAPIError(error) });
-    }
-  }
-
-  async loadTransactions(page) {
-    const { _id } = this.props.match.params;
-
-    try {
-      const response = await API({
-        params: { user: _id, page },
-        method: 'get',
-        url: '/transactions',
-      });
-
-      const { transactions, pages } = response.data;
-
-      this.setState({ transactions, transactionsPages: pages });
+      const response = await API({ method: 'get', url: `/rides/${_id}` });
+      const { data: ride } = response;
+      this.setState({ ride });
     } catch (error) {
       this.setState({ errors: normalizedAPIError(error) });
     }
   }
 
   render() {
-    const {
-      user,
-      rides,
-      ridesPages,
-      payments,
-      paymentsPages,
-      transactions,
-      transactionsPages,
-      errors,
-    } = this.state;
+    const { ride, errors } = this.state;
 
     if (!_.isEmpty(errors.message)) {
       return <Alert color="danger">{errors.message}</Alert>;
     }
 
-    if (!user) {
+    if (!ride) {
       return '';
     }
 
     const {
-      _id, displayName, email, countryCode, phoneNumber, balance, createdAt, photo,
-    } = user;
+      _id,
+      user,
+      scooter,
+      unlockTime,
+      lockTime,
+      unlockLocation,
+      lockLocation,
+      route,
+      encodedPath,
+      duration,
+      distance,
+      completed,
+      unlockCost,
+      minuteCost,
+      totalCost,
+    } = ride;
 
     return (
       <div className="animated fadeIn">
-        {/* user info */}
         <Row>
           <Col lg={10}>
             <Card>
               <CardHeader>
-                <img
-                  src={photo || '/assets/img/avatars/default.png'}
-                  className="img"
-                  alt="avatar"
-                  style={{ width: '72px', marginRight: '16px' }}
-                />
                 <strong>
-                  User id:
+                  Ride id:
                   {_id}
                 </strong>
                 &nbsp;
-                <RoleBadge user={user} />
+                <RideStatusBadge ride={ride} />
               </CardHeader>
 
               <CardBody>
                 <Table responsive striped>
                   <tbody>
                     <tr>
-                      <th>Name</th>
-                      <td>{displayName}</td>
+                      <th>User</th>
+                      <td>
+                        <Link to={userLink(user)}>{user}</Link>
+                      </td>
                     </tr>
                     <tr>
-                      <th>Email</th>
-                      <td>{email}</td>
+                      <th>Vehicle</th>
+                      <td>
+                        <Link to={vehicleLink(scooter)}>{scooter}</Link>
+                      </td>
                     </tr>
                     <tr>
-                      <th>Phone</th>
-                      <td>{`${countryCode || ''} ${phoneNumber || ''}`}</td>
+                      <th>Unlock Time</th>
+                      <td>{dateTimeString(unlockTime)}</td>
                     </tr>
                     <tr>
-                      <th>Balance</th>
-                      <td>{priceString(balance)}</td>
+                      <th>Lock Time</th>
+                      <td>{dateTimeString(lockTime)}</td>
                     </tr>
                     <tr>
-                      <th>Joined</th>
-                      <td>{dateString(createdAt)}</td>
+                      <th>Unlock Location</th>
+                      <td>
+                        <a
+                          href={coordinatesMapLink(unlockLocation.coordinates)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <i className="icon-map" />
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Lock Location</th>
+                      <td>
+                        <a
+                          href={coordinatesMapLink(lockLocation.coordinates)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <i className="icon-map" />
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Duration</th>
+                      <td>{durationString(duration)}</td>
+                    </tr>
+                    <tr>
+                      <th>Distance</th>
+                      <td>{distanceString(distance)}</td>
+                    </tr>
+                    <tr>
+                      <th>Unlock Cost</th>
+                      <td>{priceString(unlockCost)}</td>
+                    </tr>
+                    <tr>
+                      <th>Riding Cost</th>
+                      <td>{priceString(minuteCost)}</td>
+                    </tr>
+                    <tr>
+                      <th>Total Cost</th>
+                      <td>{priceString(totalCost)}</td>
                     </tr>
                   </tbody>
                 </Table>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-
-        {/* user's rides */}
-        <Row>
-          <Col lg={10}>
-            <Card>
-              <CardHeader>
-                <strong>Rides</strong>
-              </CardHeader>
-
-              <CardBody>
-                <PaginationTable
-                  searchable={false}
-                  items={rides}
-                  pages={ridesPages}
-                  loadItemsForPage={this.loadRides}
-                  headerComponent={RidesHeader}
-                  rowComponent={RideRow}
-                />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-
-        {/* user's payments */}
-        <Row>
-          <Col lg={10}>
-            <Card>
-              <CardHeader>
-                <strong>Payments</strong>
-              </CardHeader>
-
-              <CardBody>
-                <PaginationTable
-                  searchable={false}
-                  items={payments}
-                  pages={paymentsPages}
-                  loadItemsForPage={this.loadPayments}
-                  headerComponent={PaymentHeader}
-                  rowComponent={PaymentRow}
-                />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-
-        {/* user's transactions */}
-        <Row>
-          <Col lg={10}>
-            <Card>
-              <CardHeader>
-                <strong>Transactions</strong>
-              </CardHeader>
-
-              <CardBody>
-                <PaginationTable
-                  searchable={false}
-                  items={transactions}
-                  pages={transactionsPages}
-                  loadItemsForPage={this.loadTransactions}
-                  headerComponent={TransactionHeader}
-                  rowComponent={TransactionRow}
-                />
               </CardBody>
             </Card>
           </Col>
@@ -348,4 +163,4 @@ class User extends Component {
   }
 }
 
-export default User;
+export default Ride;

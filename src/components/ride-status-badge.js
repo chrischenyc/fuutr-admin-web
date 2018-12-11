@@ -1,7 +1,7 @@
 import React from 'react';
 import { Badge } from 'reactstrap';
 
-const VehicleStatusBadge = (props) => {
+const RideStatusBadge = (props) => {
   const { ride } = props;
 
   if (ride.completed) {
@@ -15,4 +15,4 @@ const VehicleStatusBadge = (props) => {
   return <Badge color="info">Riding</Badge>;
 };
 
-export default VehicleStatusBadge;
+export default RideStatusBadge;
