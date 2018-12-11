@@ -6,15 +6,55 @@ import _ from 'lodash';
 import { Link } from 'react-router-dom';
 
 import RoleBadge from '../../components/role-badge';
+import VehicleBadge from '../../components/vehicle-status-badge';
 import TransactionTypeBadge from '../../components/transaction-type-badge';
 import PaginationTable from '../../containers/PaginationTable/PaginationTable';
-import { RidesHeader, RideRow } from '../Rides/Table';
 
 import { API, normalizedAPIError } from '../../api';
 import { dateString, dateTimeString } from '../../utils/format-date';
-
+import durationString from '../../utils/format-duration';
 import priceString from '../../utils/format-price';
+import distanceString from '../../utils/format-distance';
 import { shortenedId } from '../../utils/trunc-string';
+
+const RidesHeader = () => (
+  <tr>
+    <th scope="col">id</th>
+    <th scope="col">vehicle</th>
+    <th scope="col">duration</th>
+    <th scope="col">distance</th>
+    <th scope="col">total</th>
+    <th scope="col">time</th>
+    <th scope="col">status</th>
+  </tr>
+);
+
+const RideRow = (ride) => {
+  const {
+    _id, scooter, duration, distance, totalCost, createdAt,
+  } = ride;
+
+  const rideLink = `/rides/${_id}`;
+  const vehicleLink = `/vehicle/${scooter}`;
+
+  return (
+    <tr key={_id}>
+      <td>
+        <Link to={rideLink}>{shortenedId(_id)}</Link>
+      </td>
+      <td>
+        <Link to={vehicleLink}>{shortenedId(scooter)}</Link>
+      </td>
+      <td>{durationString(duration)}</td>
+      <td>{distanceString(distance)}</td>
+      <td>{priceString(totalCost)}</td>
+      <td>{dateTimeString(createdAt)}</td>
+      <td>
+        <VehicleBadge ride={ride} />
+      </td>
+    </tr>
+  );
+};
 
 const PaymentHeader = () => (
   <tr>
