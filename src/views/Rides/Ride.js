@@ -108,25 +108,29 @@ class Ride extends Component {
                     <tr>
                       <th>Unlock Location</th>
                       <td>
-                        <a
-                          href={coordinatesMapLink(unlockLocation.coordinates)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <i className="icon-map" />
-                        </a>
+                        {unlockLocation && unlockLocation.coordinates && (
+                          <a
+                            href={coordinatesMapLink(unlockLocation.coordinates)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <i className="icon-map" />
+                          </a>
+                        )}
                       </td>
                     </tr>
                     <tr>
                       <th>Lock Location</th>
                       <td>
-                        <a
-                          href={coordinatesMapLink(lockLocation.coordinates)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <i className="icon-map" />
-                        </a>
+                        {lockLocation && lockLocation.coordinates && (
+                          <a
+                            href={coordinatesMapLink(lockLocation.coordinates)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <i className="icon-map" />
+                          </a>
+                        )}
                       </td>
                     </tr>
                     <tr>
