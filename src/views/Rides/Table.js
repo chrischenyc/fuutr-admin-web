@@ -25,7 +25,7 @@ export const RidesHeader = () => (
 
 export const RideRow = (ride) => {
   const {
-    _id, user, scooter, duration, distance, totalCost, createdAt,
+    _id, user, vehicle, duration, distance, totalCost, createdAt,
   } = ride;
 
   return (
@@ -37,7 +37,7 @@ export const RideRow = (ride) => {
         <Link to={userLink(user)}>{shortenedId(user)}</Link>
       </td>
       <td>
-        <Link to={vehicleLink(scooter)}>{shortenedId(scooter)}</Link>
+        <Link to={vehicleLink(vehicle)}>{shortenedId(vehicle)}</Link>
       </td>
       <td>{durationString(duration)}</td>
       <td>{distanceString(distance)}</td>
