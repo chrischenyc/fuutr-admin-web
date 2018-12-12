@@ -29,17 +29,11 @@ export default {
     },
     {
       name: 'Vehicles',
-      url: '/vehicles',
       icon: 'icon-cursor',
       children: [
         {
-          name: 'online',
-          url: '/vehicles/online',
-          icon: 'icon-cursor',
-        },
-        {
-          name: 'offline',
-          url: '/vehicles/offline',
+          name: 'Vehicles',
+          url: '/vehicles',
           icon: 'icon-cursor',
         },
       ],
