@@ -6,6 +6,7 @@ const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
 const Rides = React.lazy(() => import('./views/Rides/Rides'));
 const Ride = React.lazy(() => import('./views/Rides/Ride'));
+const Payments = React.lazy(() => import('./views/Payments/Payments'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -17,6 +18,8 @@ const routes = [
 
   { path: '/rides', exact: true, name: 'Rides', component: Rides },
   { path: '/rides/:_id', exact: true, name: 'Ride Details', component: Ride },
+
+  { path: '/payments', exact: true, name: 'Payments', component: Payments },
 ];
 
 export default routes;
