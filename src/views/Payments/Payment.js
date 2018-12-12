@@ -5,68 +5,53 @@ import {
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 
-import RideStatusBadge from '../../components/ride-status-badge';
-
 import { API, normalizedAPIError } from '../../api';
 import { dateTimeString } from '../../utils/format-date';
 import priceString from '../../utils/format-price';
-import distanceString from '../../utils/format-distance';
-import durationString from '../../utils/format-duration';
-import { userLink, vehicleLink, coordinatesMapLink } from '../../utils/links';
+import { userLink, stripePaymentLink } from '../../utils/links';
 
-class Ride extends Component {
+class Payment extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      ride: null,
+      payment: null,
       errors: {},
     };
 
-    this.loadRide = this.loadRide.bind(this);
+    this.loadPayment = this.loadPayment.bind(this);
   }
 
   componentDidMount() {
-    this.loadRide();
+    this.loadPayment();
   }
 
-  async loadRide() {
+  async loadPayment() {
     const { _id } = this.props.match.params;
 
     try {
-      const response = await API({ method: 'get', url: `/rides/${_id}` });
-      const { data: ride } = response;
-      this.setState({ ride });
+      const response = await API({ method: 'get', url: `/payments/${_id}` });
+      const { data: payment } = response;
+      this.setState({ payment });
     } catch (error) {
       this.setState({ errors: normalizedAPIError(error) });
     }
   }
 
   render() {
-    const { ride, errors } = this.state;
+    const { payment, errors } = this.state;
 
     if (!_.isEmpty(errors.message)) {
       return <Alert color="danger">{errors.message}</Alert>;
     }
 
-    if (!ride) {
+    if (!payment) {
       return '';
     }
 
     const {
-      _id,
-      user,
-      scooter,
-      unlockTime,
-      lockTime,
-      unlockLocation,
-      lockLocation,
-      duration,
-      distance,
-      unlockCost,
-      minuteCost,
-      totalCost,
-    } = ride;
+      _id, user, amount, description, createdAt, stripeChargeId, lastFour,
+    } = payment;
 
     return (
       <div className="animated fadeIn">
@@ -75,11 +60,9 @@ class Ride extends Component {
             <Card>
               <CardHeader>
                 <strong>
-                  Ride id:
+                  Payment id:
                   {_id}
                 </strong>
-                &nbsp;
-                <RideStatusBadge ride={ride} />
               </CardHeader>
 
               <CardBody>
@@ -92,62 +75,32 @@ class Ride extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <th>Vehicle</th>
-                      <td>
-                        <Link to={vehicleLink(scooter)}>{scooter}</Link>
-                      </td>
+                      <th>Amount</th>
+                      <td>{priceString(amount)}</td>
                     </tr>
                     <tr>
-                      <th>Unlock Time</th>
-                      <td>{dateTimeString(unlockTime)}</td>
+                      <th>Description</th>
+                      <td>{description}</td>
                     </tr>
                     <tr>
-                      <th>Lock Time</th>
-                      <td>{dateTimeString(lockTime)}</td>
+                      <th>Time</th>
+                      <td>{dateTimeString(createdAt)}</td>
                     </tr>
                     <tr>
-                      <th>Unlock Location</th>
+                      <th>card number</th>
+                      <td>{`xxxx xxxx xxxx ${lastFour}`}</td>
+                    </tr>
+                    <tr>
+                      <th>Stripe transaction</th>
                       <td>
                         <a
-                          href={coordinatesMapLink(unlockLocation.coordinates)}
+                          href={stripePaymentLink(stripeChargeId)}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <i className="icon-map" />
+                          {stripeChargeId}
                         </a>
                       </td>
-                    </tr>
-                    <tr>
-                      <th>Lock Location</th>
-                      <td>
-                        <a
-                          href={coordinatesMapLink(lockLocation.coordinates)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <i className="icon-map" />
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th>Duration</th>
-                      <td>{durationString(duration)}</td>
-                    </tr>
-                    <tr>
-                      <th>Distance</th>
-                      <td>{distanceString(distance)}</td>
-                    </tr>
-                    <tr>
-                      <th>Unlock Cost</th>
-                      <td>{priceString(unlockCost)}</td>
-                    </tr>
-                    <tr>
-                      <th>Riding Cost</th>
-                      <td>{priceString(minuteCost)}</td>
-                    </tr>
-                    <tr>
-                      <th>Total Cost</th>
-                      <td>{priceString(totalCost)}</td>
                     </tr>
                   </tbody>
                 </Table>
@@ -160,4 +113,4 @@ class Ride extends Component {
   }
 }
 
-export default Ride;
+export default Payment;
