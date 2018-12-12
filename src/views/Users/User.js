@@ -3,46 +3,18 @@ import {
   Card, CardBody, CardHeader, Col, Row, Table, Alert,
 } from 'reactstrap';
 import _ from 'lodash';
-import { Link } from 'react-router-dom';
 
 import RoleBadge from '../../components/role-badge';
 import TransactionTypeBadge from '../../components/transaction-type-badge';
 import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 import { RidesHeader, RideRow } from '../Rides/Table';
+import { PaymentsHeader, PaymentRow } from '../Payments/Table';
 
 import { API, normalizedAPIError } from '../../api';
 import { dateString, dateTimeString } from '../../utils/format-date';
 
 import priceString from '../../utils/format-price';
 import { shortenedId } from '../../utils/trunc-string';
-
-const PaymentHeader = () => (
-  <tr>
-    <th scope="col">id</th>
-    <th scope="col">amount</th>
-    <th scope="col">description</th>
-    <th scope="col">time</th>
-  </tr>
-);
-
-const PaymentRow = (payment) => {
-  const {
-    _id, amount, description, createdAt,
-  } = payment;
-
-  const paymentLink = `/payments/${_id}`;
-
-  return (
-    <tr key={_id}>
-      <td>
-        <Link to={paymentLink}>{shortenedId(_id)}</Link>
-      </td>
-      <td>{priceString(amount)}</td>
-      <td>{description}</td>
-      <td>{dateTimeString(createdAt)}</td>
-    </tr>
-  );
-};
 
 const TransactionHeader = () => (
   <tr>
@@ -274,7 +246,7 @@ class User extends Component {
                   items={payments}
                   pages={paymentsPages}
                   loadItemsForPage={this.loadPayments}
-                  headerComponent={PaymentHeader}
+                  headerComponent={PaymentsHeader}
                   rowComponent={PaymentRow}
                 />
               </CardBody>
