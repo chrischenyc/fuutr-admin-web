@@ -56,7 +56,7 @@ class Ride extends Component {
     const {
       _id,
       user,
-      scooter,
+      vehicle,
       unlockTime,
       lockTime,
       unlockLocation,
@@ -94,7 +94,7 @@ class Ride extends Component {
                     <tr>
                       <th>Vehicle</th>
                       <td>
-                        <Link to={vehicleLink(scooter)}>{scooter}</Link>
+                        <Link to={vehicleLink(vehicle)}>{vehicle}</Link>
                       </td>
                     </tr>
                     <tr>
