@@ -36,6 +36,11 @@ export default {
           url: '/vehicles',
           icon: 'icon-cursor',
         },
+        {
+          name: 'Add Vehicles',
+          url: '/vehicles/add',
+          icon: 'icon-plus',
+        },
       ],
     },
     {

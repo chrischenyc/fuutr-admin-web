@@ -10,6 +10,7 @@ import VehicleStatusBadges from '../../components/vehicle-status-badges';
 export const VehiclesHeader = () => (
   <tr>
     <th scope="col">id</th>
+    <th scope="col">Unlock Code</th>
     <th scope="col">IoT code</th>
     <th scope="col">vehicle code</th>
     <th scope="col">Range</th>
@@ -19,7 +20,7 @@ export const VehiclesHeader = () => (
 
 export const VehicleRow = (vehicle) => {
   const {
-    _id, iotCode, vehicleCode, remainderRange,
+    _id, unlockCode, iotCode, vehicleCode, remainderRange,
   } = vehicle;
 
   return (
@@ -27,6 +28,7 @@ export const VehicleRow = (vehicle) => {
       <td>
         <Link to={vehicleLink(_id)}>{shortenedId(_id)}</Link>
       </td>
+      <td>{unlockCode}</td>
       <td>{iotCode}</td>
       <td>{vehicleCode}</td>
       <td>{distanceString(remainderRange)}</td>
