@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { Redirect } from 'react-router-dom';
 
 import {
-  Container, Card, CardBody, CardHeader,
+  Card, CardBody, CardHeader, Row, Col,
 } from 'reactstrap';
 
 import AddVehicleForm from './AddVehicleForm';
@@ -48,25 +48,28 @@ class AddVehicle extends Component {
 
     return (
       <div className="animated fadeIn">
-        <Container>
-          <Card>
-            <CardHeader>
-              <h2>Add Vehicles</h2>
-            </CardHeader>
+        <Row>
+          <Col lg="6">
+            <Card>
+              <CardHeader>
+                <i className="fa fa-align-justify" />
+                Add Vehicles
+              </CardHeader>
 
-            <CardBody>
-              <Formik
-                render={AddVehicleForm}
-                initialValues={{ vehicleCode: '', iotCode: '' }}
-                validationSchema={yup.object().shape({
-                  vehicleCode: yup.string().required(),
-                  iotCode: yup.string().required(),
-                })}
-                onSubmit={this.handleAddVehicle}
-              />
-            </CardBody>
-          </Card>
-        </Container>
+              <CardBody>
+                <Formik
+                  render={AddVehicleForm}
+                  initialValues={{ vehicleCode: '', iotCode: '' }}
+                  validationSchema={yup.object().shape({
+                    vehicleCode: yup.string().required(),
+                    iotCode: yup.string().required(),
+                  })}
+                  onSubmit={this.handleAddVehicle}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
       </div>
     );
   }
