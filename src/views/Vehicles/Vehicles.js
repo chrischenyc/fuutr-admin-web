@@ -50,7 +50,7 @@ class Vehicles extends Component {
 
               <CardBody>
                 <PaginationTable
-                  searchPlaceholder="search for IoT code, vehicle code"
+                  searchPlaceholder="search for unlock code, IoT code, vehicle code"
                   items={this.state.vehicles}
                   pages={this.state.pages}
                   loadItemsForPage={this.loadVehicles}
