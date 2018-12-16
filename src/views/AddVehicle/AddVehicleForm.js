@@ -10,7 +10,7 @@ const AddVehicleForm = ({
 }) => (
   <Form onSubmit={handleSubmit}>
     <Row form>
-      <Col md={3}>
+      <Col md={5}>
         <FormGroup>
           <Input
             tag={Field}
@@ -24,7 +24,7 @@ const AddVehicleForm = ({
           {touched.vehicleCode && <FormFeedback>{errors.vehicleCode}</FormFeedback>}
         </FormGroup>
       </Col>
-      <Col md={3}>
+      <Col md={5}>
         <FormGroup>
           <Input
             tag={Field}
