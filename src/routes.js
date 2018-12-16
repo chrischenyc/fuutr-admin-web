@@ -27,8 +27,8 @@ const routes = [
   { path: '/payments/:_id', exact: true, name: 'Payment Details', component: Payment },
 
   { path: '/vehicles', exact: true, name: 'Vehicles', component: Vehicles },
-  { path: '/vehicles/:_id', exact: true, name: 'Vehicle Details', component: Vehicle },
   { path: '/vehicles/add', exact: true, name: 'Add Vehicle', component: AddVehicle },
+  { path: '/vehicles/:_id', exact: true, name: 'Vehicle Details', component: Vehicle },
 ];
 
 export default routes;
