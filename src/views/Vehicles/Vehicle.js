@@ -75,7 +75,13 @@ class Vehicle extends Component {
     }
 
     const {
-      _id, unlockCode, iotCode, vehicleCode, remainderRange, createdAt,
+      _id,
+      unlockCode,
+      unlockQRImage,
+      iotCode,
+      vehicleCode,
+      remainderRange,
+      createdAt,
     } = vehicle;
 
     return (
@@ -85,6 +91,12 @@ class Vehicle extends Component {
           <Col lg={10}>
             <Card>
               <CardHeader>
+                <img
+                  src={unlockQRImage}
+                  className="img"
+                  alt="Unlock QR Code"
+                  style={{ width: '160px', marginRight: '16px' }}
+                />
                 <strong>
                   Vehicle id:
                   {_id}
