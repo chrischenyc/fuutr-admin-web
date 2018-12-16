@@ -1,6 +1,14 @@
 import React from 'react';
 import {
-  Button, Form, FormText, FormFeedback, Input, FormGroup, Row, Col,
+  Button,
+  Form,
+  FormText,
+  FormFeedback,
+  Input,
+  FormGroup,
+  Row,
+  Col,
+  Label,
 } from 'reactstrap';
 import { Field } from 'formik';
 import _ from 'lodash';
@@ -9,8 +17,21 @@ const AddVehicleForm = ({
   handleSubmit, errors, isSubmitting, touched,
 }) => (
   <Form onSubmit={handleSubmit}>
+    <Row>
+      <Col md={6}>
+        <Label>
+          <strong>Vehicle Code</strong>
+        </Label>
+      </Col>
+      <Col md={6}>
+        <Label>
+          <strong>IoT Code</strong>
+        </Label>
+      </Col>
+    </Row>
+
     <Row form>
-      <Col md={5}>
+      <Col md={6}>
         <FormGroup>
           <Input
             tag={Field}
@@ -24,7 +45,7 @@ const AddVehicleForm = ({
           {touched.vehicleCode && <FormFeedback>{errors.vehicleCode}</FormFeedback>}
         </FormGroup>
       </Col>
-      <Col md={5}>
+      <Col md={6}>
         <FormGroup>
           <Input
             tag={Field}
