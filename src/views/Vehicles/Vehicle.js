@@ -77,7 +77,6 @@ class Vehicle extends Component {
     }
 
     const {
-      _id,
       unlockCode,
       unlockQRImage,
       iotCode,
