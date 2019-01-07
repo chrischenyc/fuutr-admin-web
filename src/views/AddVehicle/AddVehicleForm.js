@@ -20,31 +20,17 @@ const AddVehicleForm = ({
     <Row>
       <Col md={6}>
         <Label>
-          <strong>Vehicle Code</strong>
+          <strong>IoT Code</strong>
         </Label>
       </Col>
       <Col md={6}>
         <Label>
-          <strong>IoT Code</strong>
+          <strong>Vehicle Code</strong>
         </Label>
       </Col>
     </Row>
 
     <Row form>
-      <Col md={6}>
-        <FormGroup>
-          <Input
-            tag={Field}
-            type="text"
-            name="vehicleCode"
-            placeholder="vehicle code"
-            disabled={isSubmitting}
-            invalid={touched.vehicleCode && !_.isEmpty(errors.vehicleCode)}
-          />
-
-          {touched.vehicleCode && <FormFeedback>{errors.vehicleCode}</FormFeedback>}
-        </FormGroup>
-      </Col>
       <Col md={6}>
         <FormGroup>
           <Input
@@ -57,6 +43,20 @@ const AddVehicleForm = ({
           />
 
           {touched.iotCode && <FormFeedback>{errors.iotCode}</FormFeedback>}
+        </FormGroup>
+      </Col>
+      <Col md={6}>
+        <FormGroup>
+          <Input
+            tag={Field}
+            type="text"
+            name="vehicleCode"
+            placeholder="vehicle code"
+            disabled={isSubmitting}
+            invalid={touched.vehicleCode && !_.isEmpty(errors.vehicleCode)}
+          />
+
+          {touched.vehicleCode && <FormFeedback>{errors.vehicleCode}</FormFeedback>}
         </FormGroup>
       </Col>
     </Row>
