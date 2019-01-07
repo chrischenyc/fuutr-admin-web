@@ -4,7 +4,7 @@ import { Badge } from 'reactstrap';
 const VehicleStatusBadges = (props) => {
   const {
     vehicle: {
-      online, locked, charging, powerPercent,
+      online, locked, charging, powerPercent, networkSignal,
     },
   } = props;
 
@@ -19,6 +19,8 @@ const VehicleStatusBadges = (props) => {
       {charging && <Badge color="warning">charging</Badge>}
       &nbsp;
       {powerPercent && <Badge color="warning">{`power ${powerPercent}%`}</Badge>}
+      &nbsp;
+      {networkSignal && <Badge color="success">{`network ${networkSignal}%`}</Badge>}
     </Fragment>
   );
 };
