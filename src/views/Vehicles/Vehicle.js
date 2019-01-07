@@ -11,6 +11,8 @@ import VehicleStatusBadges from '../../components/vehicle-status-badges';
 import { API, normalizedAPIError } from '../../api';
 import { dateString } from '../../utils/format-date';
 import distanceString from '../../utils/format-distance';
+import speedModeString from '../../utils/format-speed-mode';
+import { coordinatesMapLink } from '../../utils/links';
 
 class Vehicle extends Component {
   constructor(props) {
@@ -80,8 +82,11 @@ class Vehicle extends Component {
       unlockQRImage,
       iotCode,
       vehicleCode,
-      remainderRange,
       createdAt,
+      speedMode,
+      odometer,
+      remainderRange,
+      location,
     } = vehicle;
 
     return (
@@ -97,41 +102,64 @@ class Vehicle extends Component {
                   alt="Unlock QR Code"
                   style={{ width: '160px', marginRight: '16px' }}
                 />
-                <strong>
-                  Vehicle id:
-                  {_id}
-                </strong>
-                &nbsp;
-                <VehicleStatusBadges vehicle={vehicle} />
+                <h4>
+                  <VehicleStatusBadges vehicle={vehicle} />
+                </h4>
               </CardHeader>
 
               <CardBody>
                 <Table responsive striped>
                   <tbody>
                     <tr>
-                      <th>unlockCode</th>
+                      <th>created</th>
+                      <td>{dateString(createdAt)}</td>
+                    </tr>
+
+                    <tr>
+                      <th>unlock code</th>
                       <td>{unlockCode}</td>
                     </tr>
 
                     <tr>
-                      <th>iotCode</th>
+                      <th>iot code</th>
                       <td>{iotCode}</td>
                     </tr>
 
                     <tr>
-                      <th>vehicleCode</th>
+                      <th>vehicle code</th>
                       <td>{vehicleCode}</td>
                     </tr>
 
                     <tr>
-                      <th>remainderRange</th>
+                      <th>range</th>
                       <td>{distanceString(remainderRange)}</td>
                     </tr>
 
                     <tr>
-                      <th>Created</th>
-                      <td>{dateString(createdAt)}</td>
+                      <th>speedMode</th>
+                      <td>{speedModeString(speedMode)}</td>
                     </tr>
+
+                    <tr>
+                      <th>odometer</th>
+                      <td>{distanceString(odometer)}</td>
+                    </tr>
+
+                    <tr>
+                      <th>last location</th>
+                      <td>
+                        {location && location.coordinates && (
+                          <a
+                            href={coordinatesMapLink(location.coordinates)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <i className="icon-map" />
+                          </a>
+                        )}
+                      </td>
+                    </tr>
+                   
                   </tbody>
                 </Table>
               </CardBody>
