@@ -11,6 +11,7 @@ const Payment = React.lazy(() => import('./views/Payments/Payment'));
 const Vehicles = React.lazy(() => import('./views/Vehicles/Vehicles'));
 const Vehicle = React.lazy(() => import('./views/Vehicles/Vehicle'));
 const AddVehicle = React.lazy(() => import('./views/AddVehicle/AddVehicle'));
+const EditVehicle = React.lazy(() => import('./views/EditVehicle/EditVehicle'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -29,6 +30,7 @@ const routes = [
   { path: '/vehicles', exact: true, name: 'Vehicles', component: Vehicles },
   { path: '/vehicles/add', exact: true, name: 'Add Vehicle', component: AddVehicle },
   { path: '/vehicles/:_id', exact: true, name: 'Vehicle Details', component: Vehicle },
+  { path: '/vehicles/:_id/edit', exact: true, name: 'Edit Vehicle', component: EditVehicle },
 ];
 
 export default routes;
