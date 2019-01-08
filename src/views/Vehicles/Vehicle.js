@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import {
-  Card, CardBody, CardHeader, Col, Row, Table, Alert,
+  Card, CardBody, CardHeader, Col, Row, Table, Alert, Button,
 } from 'reactstrap';
 import _ from 'lodash';
+import { Link } from 'react-router-dom'
 
 import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 import { RidesHeader, RideRow } from '../Rides/Table';
@@ -12,7 +13,7 @@ import { API, normalizedAPIError } from '../../api';
 import { dateString } from '../../utils/format-date';
 import distanceString from '../../utils/format-distance';
 import speedModeString from '../../utils/format-speed-mode';
-import { coordinatesMapLink } from '../../utils/links';
+import { coordinatesMapLink, vehicleEditLink } from '../../utils/links';
 
 class Vehicle extends Component {
   constructor(props) {
@@ -77,6 +78,7 @@ class Vehicle extends Component {
     }
 
     const {
+      _id,
       unlockCode,
       unlockQRImage,
       iotCode,
@@ -95,6 +97,9 @@ class Vehicle extends Component {
           <Col lg={10}>
             <Card>
               <CardHeader>
+                <Link to={vehicleEditLink(_id)}>
+                  <Button className="float-right">Edit</Button>
+                </Link>
                 <img
                   src={unlockQRImage}
                   className="img"
