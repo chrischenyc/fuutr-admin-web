@@ -136,7 +136,7 @@ class Vehicle extends Component {
 
                     <tr>
                       <th>range</th>
-                      <td>{distanceString(remainderRange)}</td>
+                      <td>{distanceString(remainderRange * 10)}</td>
                     </tr>
 
                     <tr>
@@ -146,7 +146,7 @@ class Vehicle extends Component {
 
                     <tr>
                       <th>odometer</th>
-                      <td>{distanceString(odometer)}</td>
+                      <td>{distanceString(odometer * 10)}</td>
                     </tr>
 
                     <tr>
