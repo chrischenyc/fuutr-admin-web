@@ -7,6 +7,7 @@ import _ from 'lodash';
 import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 import { API, normalizedAPIError } from '../../api';
 import { VehiclesHeader, VehicleRow } from './Table';
+import MapContainer from '../../components/MapContainer';
 
 class Vehicles extends Component {
   constructor(props) {
@@ -40,33 +41,33 @@ class Vehicles extends Component {
   render() {
     return (
       <div className="animated fadeIn">
-        <Row>
-          <Col>
-            <Card>
-              <CardHeader>
-                <i className="fa fa-align-justify" />
-                Vehicles
-              </CardHeader>
+        <Card style={{ height: '600px' }}>
+          <MapContainer />
+        </Card>
 
-              <CardBody>
-                <PaginationTable
-                  searchPlaceholder="search for unlock code, IoT code, vehicle code"
-                  items={this.state.vehicles}
-                  pages={this.state.pages}
-                  loadItemsForPage={this.loadVehicles}
-                  headerComponent={VehiclesHeader}
-                  rowComponent={VehicleRow}
-                />
-              </CardBody>
+        <Card>
+          <CardHeader>
+            <i className="fa fa-align-justify" />
+            Vehicles
+          </CardHeader>
 
-              <CardFooter>
-                {!_.isEmpty(this.state.errors.message) && (
-                  <Alert color="danger">{this.state.errors.message}</Alert>
-                )}
-              </CardFooter>
-            </Card>
-          </Col>
-        </Row>
+          <CardBody>
+            <PaginationTable
+              searchPlaceholder="search for unlock code, IoT code, vehicle code"
+              items={this.state.vehicles}
+              pages={this.state.pages}
+              loadItemsForPage={this.loadVehicles}
+              headerComponent={VehiclesHeader}
+              rowComponent={VehicleRow}
+            />
+          </CardBody>
+
+          {!_.isEmpty(this.state.errors.message) && (
+            <CardFooter>
+              <Alert color="danger">{this.state.errors.message}</Alert>
+            </CardFooter>
+          )}
+        </Card>
       </div>
     );
   }
