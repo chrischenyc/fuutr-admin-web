@@ -14,11 +14,13 @@ import {
 import { connect } from 'react-redux';
 
 // sidebar nav config
-import navigation from '../../_nav';
+import navigationAdmin from '../../nav-admin';
+import navigationCouncil from '../../nav-council';
 // routes config
 import routes from '../../routes';
 
 import { userSignedOut } from '../../store/user';
+import navCouncil from '../../nav-council';
 
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
@@ -45,7 +47,10 @@ class DefaultLayout extends Component {
             <AppSidebarHeader />
             <AppSidebarForm />
             <Suspense>
-              <AppSidebarNav navConfig={navigation} {...this.props} />
+              <AppSidebarNav
+                navConfig={this.props.user.isAdmin ? navigationAdmin : navCouncil}
+                {...this.props}
+              />
             </Suspense>
             <AppSidebarFooter />
             <AppSidebarMinimizer />
