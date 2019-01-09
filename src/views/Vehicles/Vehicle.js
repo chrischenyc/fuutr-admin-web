@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
   Card, CardBody, CardHeader, Col, Row, Table, Alert, Button,
 } from 'reactstrap';
@@ -28,6 +28,7 @@ class Vehicle extends Component {
 
     this.loadVehicle = this.loadVehicle.bind(this);
     this.loadRides = this.loadRides.bind(this);
+    this.lockVehicle = this.lockVehicle.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +42,17 @@ class Vehicle extends Component {
       const response = await API({ method: 'get', url: `/vehicles/${_id}` });
       const { data: vehicle } = response;
       this.setState({ vehicle });
+    } catch (error) {
+      this.setState({ errors: normalizedAPIError(error) });
+    }
+  }
+
+  async lockVehicle(lock) {
+    const { _id } = this.props.match.params;
+
+    try {
+      await API({ method: 'patch', url: `/vehicles/${_id}/lock`, data: { lock } });
+      this.loadVehicle();
     } catch (error) {
       this.setState({ errors: normalizedAPIError(error) });
     }
@@ -88,6 +100,7 @@ class Vehicle extends Component {
       odometer,
       remainderRange,
       location,
+      locked,
     } = vehicle;
 
     return (
@@ -97,9 +110,40 @@ class Vehicle extends Component {
           <Col lg={10}>
             <Card>
               <CardHeader>
-                <Link to={vehicleEditLink(_id)}>
-                  <Button className="float-right">Edit</Button>
-                </Link>
+                <div className="float-right">
+                  <Link to={vehicleEditLink(_id)}>
+                    <Button>Edit</Button>
+                  </Link>
+
+                  {locked && (
+                    <Fragment>
+                      &nbsp;
+                      <Button
+                        color="success"
+                        onClick={() => {
+                          this.lockVehicle(false);
+                        }}
+                      >
+                        Unlock
+                      </Button>
+                    </Fragment>
+                  )}
+
+                  {!locked && (
+                    <Fragment>
+                      &nbsp;
+                      <Button
+                        color="warning"
+                        onClick={() => {
+                          this.lockVehicle(true);
+                        }}
+                      >
+                        Lock
+                      </Button>
+                    </Fragment>
+                  )}
+                </div>
+                
                 <img
                   src={unlockQRImage}
                   className="img"
