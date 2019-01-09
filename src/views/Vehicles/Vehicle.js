@@ -27,6 +27,7 @@ class Vehicle extends Component {
     };
 
     this.loadVehicle = this.loadVehicle.bind(this);
+    this.refreshVehicleStatus = this.refreshVehicleStatus.bind(this);
     this.loadRides = this.loadRides.bind(this);
     this.lockVehicle = this.lockVehicle.bind(this);
   }
@@ -42,6 +43,17 @@ class Vehicle extends Component {
       const response = await API({ method: 'get', url: `/vehicles/${_id}` });
       const { data: vehicle } = response;
       this.setState({ vehicle });
+    } catch (error) {
+      this.setState({ errors: normalizedAPIError(error) });
+    }
+  }
+
+  async refreshVehicleStatus() {
+    const { _id } = this.props.match.params;
+
+    try {
+      await API({ method: 'patch', url: `/vehicles/${_id}/query` });
+      this.loadVehicle();
     } catch (error) {
       this.setState({ errors: normalizedAPIError(error) });
     }
@@ -111,6 +123,17 @@ class Vehicle extends Component {
             <Card>
               <CardHeader>
                 <div className="float-right">
+                  <Button
+                    color="primary"
+                    onClick={() => {
+                      this.refreshVehicleStatus();
+                    }}
+                  >
+                    Refresh Status
+                  </Button>
+
+                  &nbsp;
+
                   <Link to={vehicleEditLink(_id)}>
                     <Button>Edit</Button>
                   </Link>
