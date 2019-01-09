@@ -25,6 +25,7 @@
     "flag-icon-css": "^3.2.1",
     "font-awesome": "^4.7.0",
     "formik": "^1.4.2",
+    "google-maps-react": "^2.0.2",
     "lodash": "^4.17.11",
     "moment": "^2.23.0",
     "node-sass": "^4.11.0",
