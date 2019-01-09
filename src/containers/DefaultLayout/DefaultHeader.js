@@ -2,9 +2,7 @@ import React from 'react';
 import {
   DropdownItem, DropdownMenu, DropdownToggle, Nav,
 } from 'reactstrap';
-import { AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
-
-import logo from '../../assets/img/brand/logo.svg';
+import { AppHeaderDropdown, AppSidebarToggler } from '@coreui/react';
 
 const DefaultHeader = props => (
   <React.Fragment>

@@ -3,6 +3,9 @@ import {
   Map, GoogleApiWrapper, InfoWindow, Marker,
 } from 'google-maps-react';
 
+import { vehicleLink } from '../utils/links';
+import VehicleStatusBadges from './vehicle-status-badges';
+
 const mapStyles = {
   width: '100%',
   height: '100%',
@@ -15,7 +18,7 @@ export class MapContainer extends Component {
     this.state = {
       showingInfoWindow: false,
       activeMarker: null,
-      selectedPlace: {}, // Shows the infoWindow to the selected place upon a marker
+      selectedVehicle: null,
     };
 
     this.onMarkerClick = this.onMarkerClick.bind(this);
@@ -24,7 +27,7 @@ export class MapContainer extends Component {
 
   onMarkerClick(props, marker) {
     this.setState({
-      selectedPlace: props,
+      selectedVehicle: props,
       activeMarker: marker,
       showingInfoWindow: true,
     });
@@ -40,6 +43,9 @@ export class MapContainer extends Component {
   }
 
   render() {
+    const { vehicles } = this.props;
+    const { selectedVehicle, activeMarker, showingInfoWindow } = this.state;
+
     return (
       <Map
         google={this.props.google}
@@ -50,22 +56,35 @@ export class MapContainer extends Component {
           lng: 144.9631,
         }}
       >
-        <Marker
-          position={{ lat: -37.8, lng: 144.9 }}
-          icon="/assets/img/scooter.png"
-          onClick={this.onMarkerClick}
-          name="Vehicle"
-        />
+        {/* display vehicle markers */}
+        {vehicles.map(vehicle => (
+          <Marker
+            key={vehicle._id}
+            position={{
+              lat: vehicle.location.coordinates[1],
+              lng: vehicle.location.coordinates[0],
+            }}
+            icon="/assets/img/scooter.png"
+            onClick={this.onMarkerClick}
+            name={`vehicle ${vehicle.vehicleCode}`}
+            {...vehicle}
+          />
+        ))}
 
-        <InfoWindow
-          marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}
-          onClose={this.onClose}
-        >
-          <div>
-            <h4>{this.state.selectedPlace.name}</h4>
-          </div>
-        </InfoWindow>
+        {/* display info popover for selected vehicle */}
+        {selectedVehicle && (
+          <InfoWindow marker={activeMarker} visible={showingInfoWindow} onClose={this.onClose}>
+            <div>
+              <h4>{selectedVehicle.name}</h4>
+              <VehicleStatusBadges vehicle={selectedVehicle} />
+              <br />
+              <br />
+              <div>
+                <a href={vehicleLink(selectedVehicle._id)}>details</a>
+              </div>
+            </div>
+          </InfoWindow>
+        )}
       </Map>
     );
   }
