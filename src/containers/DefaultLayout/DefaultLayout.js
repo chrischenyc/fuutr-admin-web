@@ -20,7 +20,6 @@ import navigationCouncil from '../../nav-council';
 import routes from '../../routes';
 
 import { userSignedOut } from '../../store/user';
-import navCouncil from '../../nav-council';
 
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
@@ -48,7 +47,7 @@ class DefaultLayout extends Component {
             <AppSidebarForm />
             <Suspense>
               <AppSidebarNav
-                navConfig={this.props.user.isAdmin ? navigationAdmin : navCouncil}
+                navConfig={this.props.user.isAdmin ? navigationAdmin : navigationCouncil}
                 {...this.props}
               />
             </Suspense>

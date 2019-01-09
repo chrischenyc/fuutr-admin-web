@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Card, CardBody, CardHeader, CardFooter, Col, Row, Alert,
+  Card, CardBody, CardHeader, CardFooter, Alert,
 } from 'reactstrap';
 import _ from 'lodash';
 
@@ -42,7 +42,7 @@ class Vehicles extends Component {
     return (
       <div className="animated fadeIn">
         <Card style={{ height: '600px' }}>
-          <MapContainer />
+          <MapContainer vehicles={this.state.vehicles} />
         </Card>
 
         <Card>
