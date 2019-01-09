@@ -10,21 +10,6 @@ const DefaultHeader = props => (
   <React.Fragment>
     <AppSidebarToggler className="d-lg-none" display="md" mobile />
 
-    <AppNavbarBrand
-      full={{
-        src: logo,
-        width: 89,
-        height: 30,
-        alt: 'Logo',
-      }}
-      minimized={{
-        src: logo,
-        width: 30,
-        height: 30,
-        alt: 'Logo',
-      }}
-    />
-
     <AppSidebarToggler className="d-md-down-none" display="lg" />
 
     <Nav className="ml-auto" navbar>
