@@ -3,7 +3,7 @@ import {
   Card, CardBody, CardHeader, Col, Row, Table, Alert, Button,
 } from 'reactstrap';
 import _ from 'lodash';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 import { RidesHeader, RideRow } from '../Rides/Table';
@@ -132,12 +132,6 @@ class Vehicle extends Component {
                     Refresh Status
                   </Button>
 
-                  &nbsp;
-
-                  <Link to={vehicleEditLink(_id)}>
-                    <Button>Edit</Button>
-                  </Link>
-
                   {locked && (
                     <Fragment>
                       &nbsp;
@@ -165,6 +159,13 @@ class Vehicle extends Component {
                       </Button>
                     </Fragment>
                   )}
+
+                  <Fragment>
+                    &nbsp;
+                    <Link to={vehicleEditLink(_id)}>
+                      <Button>Edit</Button>
+                    </Link>
+                  </Fragment>
                 </div>
                 
                 <img
