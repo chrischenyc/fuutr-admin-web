@@ -4,6 +4,7 @@ import {
 } from 'reactstrap';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 import { RidesHeader, RideRow } from '../Rides/Table';
@@ -93,6 +94,8 @@ class Vehicle extends Component {
       vehicle, rides, ridesPages, errors,
     } = this.state;
 
+    const { isAdmin } = this.props.user;
+
     if (!_.isEmpty(errors.message)) {
       return <Alert color="danger">{errors.message}</Alert>;
     }
@@ -122,51 +125,53 @@ class Vehicle extends Component {
           <Col lg={10}>
             <Card>
               <CardHeader>
-                <div className="float-right">
-                  <Button
-                    color="primary"
-                    onClick={() => {
-                      this.refreshVehicleStatus();
-                    }}
-                  >
-                    Refresh Status
-                  </Button>
+                {isAdmin && (
+                  <div className="float-right">
+                    <Button
+                      color="primary"
+                      onClick={() => {
+                        this.refreshVehicleStatus();
+                      }}
+                    >
+                      Refresh Status
+                    </Button>
 
-                  {locked && (
+                    {locked && (
+                      <Fragment>
+                        &nbsp;
+                        <Button
+                          color="success"
+                          onClick={() => {
+                            this.lockVehicle(false);
+                          }}
+                        >
+                          Unlock
+                        </Button>
+                      </Fragment>
+                    )}
+
+                    {!locked && (
+                      <Fragment>
+                        &nbsp;
+                        <Button
+                          color="warning"
+                          onClick={() => {
+                            this.lockVehicle(true);
+                          }}
+                        >
+                          Lock
+                        </Button>
+                      </Fragment>
+                    )}
+
                     <Fragment>
                       &nbsp;
-                      <Button
-                        color="success"
-                        onClick={() => {
-                          this.lockVehicle(false);
-                        }}
-                      >
-                        Unlock
-                      </Button>
+                      <Link to={vehicleEditLink(_id)}>
+                        <Button>Edit</Button>
+                      </Link>
                     </Fragment>
-                  )}
-
-                  {!locked && (
-                    <Fragment>
-                      &nbsp;
-                      <Button
-                        color="warning"
-                        onClick={() => {
-                          this.lockVehicle(true);
-                        }}
-                      >
-                        Lock
-                      </Button>
-                    </Fragment>
-                  )}
-
-                  <Fragment>
-                    &nbsp;
-                    <Link to={vehicleEditLink(_id)}>
-                      <Button>Edit</Button>
-                    </Link>
-                  </Fragment>
-                </div>
+                  </div>
+                )}
                 
                 <img
                   src={unlockQRImage}
@@ -265,4 +270,10 @@ class Vehicle extends Component {
   }
 }
 
-export default Vehicle;
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+export default connect(
+  mapStateToProps,
+)(Vehicle);
