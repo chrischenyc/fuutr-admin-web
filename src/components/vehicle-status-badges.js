@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Badge } from 'reactstrap';
+import _ from 'lodash';
 
 const VehicleStatusBadges = (props) => {
   const {
@@ -18,9 +19,9 @@ const VehicleStatusBadges = (props) => {
       &nbsp;
       {charging && <Badge color="warning">charging</Badge>}
       &nbsp;
-      {powerPercent && <Badge color="warning">{`power ${powerPercent}%`}</Badge>}
+      {!_.isNil(powerPercent) && <Badge color="warning">{`power ${powerPercent}%`}</Badge>}
       &nbsp;
-      {networkSignal && <Badge color="success">{`network ${networkSignal}%`}</Badge>}
+      {!_.isNil(networkSignal) && <Badge color="success">{`network ${networkSignal}%`}</Badge>}
     </Fragment>
   );
 };
