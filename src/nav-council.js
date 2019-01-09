@@ -40,5 +40,10 @@ export default {
         },
       ],
     },
+    {
+      name: 'Contact FUUTR',
+      icon: 'icon-envelope',
+      url: '/contact',
+    },
   ],
 };
