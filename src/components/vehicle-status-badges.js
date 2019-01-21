@@ -5,7 +5,7 @@ import _ from 'lodash';
 const VehicleStatusBadges = (props) => {
   const {
     vehicle: {
-      online, locked, charging, powerPercent, networkSignal,
+      online, locked, charging, powerPercent, networkSignal, reserved,
     },
   } = props;
 
@@ -22,6 +22,8 @@ const VehicleStatusBadges = (props) => {
       {!_.isNil(powerPercent) && <Badge color="warning">{`power ${powerPercent}%`}</Badge>}
       &nbsp;
       {!_.isNil(networkSignal) && <Badge color="success">{`network ${networkSignal}%`}</Badge>}
+      &nbsp;
+      {reserved && <Badge color="info">reserved</Badge>}
     </Fragment>
   );
 };
