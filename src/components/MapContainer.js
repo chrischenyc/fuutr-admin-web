@@ -57,19 +57,20 @@ class MapContainer extends Component {
         }}
       >
         {/* display vehicle markers */}
-        {vehicles.map(vehicle => (
-          <Marker
-            key={vehicle._id}
-            position={{
-              lat: vehicle.location.coordinates[1],
-              lng: vehicle.location.coordinates[0],
-            }}
-            icon="/assets/img/scooter.png"
-            onClick={this.onMarkerClick}
-            name={`vehicle ${vehicle.vehicleCode}`}
-            {...vehicle}
-          />
-        ))}
+        {vehicles
+          && vehicles.map(vehicle => (
+            <Marker
+              key={vehicle._id}
+              position={{
+                lat: vehicle.location.coordinates[1],
+                lng: vehicle.location.coordinates[0],
+              }}
+              icon="/assets/img/scooter.png"
+              onClick={this.onMarkerClick}
+              name={`vehicle ${vehicle.vehicleCode}`}
+              {...vehicle}
+            />
+          ))}
 
         {/* display info popover for selected vehicle */}
         {selectedVehicle && (
@@ -85,6 +86,8 @@ class MapContainer extends Component {
             </div>
           </InfoWindow>
         )}
+
+        {/* TODO: draw polygons for zones */}
       </Map>
     );
   }
