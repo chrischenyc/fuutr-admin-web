@@ -11,7 +11,7 @@ const mapStyles = {
   height: '100%',
 };
 
-export class MapContainer extends Component {
+class MapContainer extends Component {
   constructor(props) {
     super(props);
 
