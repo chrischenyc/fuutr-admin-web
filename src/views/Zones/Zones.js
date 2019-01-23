@@ -19,6 +19,12 @@ const ZonesHeader = () => (
   </tr>
 );
 
+const defaultZone = {
+  active: false,
+  parking: false,
+  note: '',
+};
+
 class Zones extends Component {
   constructor(props) {
     super(props);
@@ -27,11 +33,7 @@ class Zones extends Component {
       zones: [],
       pages: 0,
       errors: {},
-      zone: {
-        active: false,
-        parking: false,
-        note: '',
-      },
+      zone: defaultZone,
     };
 
     this.loadZones = this.loadZones.bind(this);
@@ -110,7 +112,12 @@ class Zones extends Component {
                 Zones
                 {isAdmin && (
                   <div className="float-right">
-                    <Button color="primary" onClick={() => {}}>
+                    <Button
+                      color="primary"
+                      onClick={() => {
+                        this.setState({ zone: defaultZone });
+                      }}
+                    >
                       Add Zone
                     </Button>
                   </div>
