@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
-import {
-  Card, CardBody, CardHeader, CardFooter, Alert, Row, Col,
-} from 'reactstrap';
+import { Card, CardBody, CardHeader, CardFooter, Alert, Row, Col, Button } from 'reactstrap';
 import _ from 'lodash';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { connect } from 'react-redux';
 
 import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 import { API, normalizedAPIError } from '../../api';
-import { ZonesHeader, ZoneRow } from './Table';
 import MapContainer from '../../components/MapContainer';
 import ZoneForm from './ZoneForm';
+import ZoneStatusBadges from '../../components/zone-status-badges';
+
+const ZonesHeader = () => (
+  <tr>
+    <th scope="col">id</th>
+    <th scope="col">status</th>
+    <th scope="col">note</th>
+  </tr>
+);
 
 class Zones extends Component {
   constructor(props) {
@@ -20,10 +27,16 @@ class Zones extends Component {
       zones: [],
       pages: 0,
       errors: {},
+      zone: {
+        active: false,
+        parking: false,
+        note: '',
+      },
     };
 
     this.loadZones = this.loadZones.bind(this);
     this.saveZone = this.saveZone.bind(this);
+    this.zoneRow = this.zoneRow.bind(this);
   }
 
   async loadZones(page, search) {
@@ -46,22 +59,43 @@ class Zones extends Component {
     setSubmitting(true);
 
     try {
-      await API({
+      const zone = await API({
         data: values,
         method: 'post',
         url: '/zones',
       });
 
-      setSubmitting(false);
+      this.setState({ zone });
 
-      this.setState({ redirectToVehicles: true });
+      setSubmitting(false);
     } catch (error) {
       setSubmitting(false);
       setErrors(normalizedAPIError(error));
     }
   }
 
+  zoneRow(zone) {
+    const { _id, note } = zone;
+
+    return (
+      <tr
+        key={_id}
+        onClick={() => {
+          this.setState({ zone });
+        }}
+      >
+        <td>{_id}</td>
+        <td>
+          <ZoneStatusBadges zone={zone} />
+        </td>
+        <td>{note}</td>
+      </tr>
+    );
+  }
+
   render() {
+    const { isAdmin } = this.props.user;
+
     return (
       <div className="animated fadeIn">
         <Row>
@@ -74,6 +108,13 @@ class Zones extends Component {
               <CardHeader>
                 <i className="fa fa-align-justify" />
                 Zones
+                {isAdmin && (
+                  <div className="float-right">
+                    <Button color="primary" onClick={() => {}}>
+                      Add Zone
+                    </Button>
+                  </div>
+                )}
               </CardHeader>
 
               <CardBody>
@@ -83,7 +124,7 @@ class Zones extends Component {
                   pages={this.state.pages}
                   loadItemsForPage={this.loadZones}
                   headerComponent={ZonesHeader}
-                  rowComponent={ZoneRow}
+                  rowComponent={this.zoneRow}
                 />
               </CardBody>
 
@@ -94,10 +135,11 @@ class Zones extends Component {
               )}
             </Card>
           </Col>
+
           <Col md="2">
             <Formik
               render={ZoneForm}
-              initialValues={{ vehicleCode: '', iotCode: '' }}
+              initialValues={this.state.zone}
               validationSchema={yup.object().shape({
                 vehicleCode: yup.string().required(),
                 iotCode: yup.string().required(),
@@ -111,4 +153,8 @@ class Zones extends Component {
   }
 }
 
-export default Zones;
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps)(Zones);
