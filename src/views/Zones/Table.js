@@ -1,40 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-import { shortenedId } from '../../utils/trunc-string';
-import distanceString from '../../utils/format-distance';
-import { vehicleLink } from '../../utils/links';
+import ZoneStatusBadges from '../../components/zone-status-badges';
 
-import VehicleStatusBadges from '../../components/vehicle-status-badges';
-
-export const VehiclesHeader = () => (
+export const ZonesHeader = () => (
   <tr>
     <th scope="col">id</th>
-    <th scope="col">Unlock Code</th>
-    <th scope="col">IoT code</th>
-    <th scope="col">vehicle code</th>
-    <th scope="col">Range</th>
     <th scope="col">status</th>
+    <th scope="col">note</th>
   </tr>
 );
 
-export const VehicleRow = (vehicle) => {
-  const {
-    _id, unlockCode, iotCode, vehicleCode, remainderRange,
-  } = vehicle;
+export const ZoneRow = (zone) => {
+  const { _id, note } = zone;
 
   return (
     <tr key={_id}>
+      <td>{_id}</td>
       <td>
-        <Link to={vehicleLink(_id)}>{shortenedId(_id)}</Link>
+        <ZoneStatusBadges zone={zone} />
       </td>
-      <td>{unlockCode}</td>
-      <td>{iotCode}</td>
-      <td>{vehicleCode}</td>
-      <td>{distanceString(remainderRange * 10)}</td>
-      <td>
-        <VehicleStatusBadges vehicle={vehicle} />
-      </td>
+      <td>{note}</td>
     </tr>
   );
 };
