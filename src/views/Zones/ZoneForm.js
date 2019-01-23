@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Button, Form, FormText, FormFeedback, Input, FormGroup, Col, Label,
+  Button, Form, FormText, FormFeedback, Input, FormGroup, Col,
 } from 'reactstrap';
 import { Field } from 'formik';
 import _ from 'lodash';
