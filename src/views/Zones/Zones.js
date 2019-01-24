@@ -149,6 +149,7 @@ class Zones extends Component {
           <Col md="2">
             <Formik
               render={ZoneForm}
+              enableReinitialize
               initialValues={this.state.zone}
               validationSchema={yup.object().shape({
                 active: yup.bool().required(),
