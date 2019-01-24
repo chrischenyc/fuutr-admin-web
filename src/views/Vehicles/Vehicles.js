@@ -10,6 +10,7 @@ import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 import { API, normalizedAPIError } from '../../api';
 import { VehiclesHeader, VehicleRow } from './Table';
 import GoogleMapContainer from '../../components/GoogleMapContainer';
+import { vehicleLink } from '../../utils/links';
 
 class Vehicles extends Component {
   constructor(props) {
@@ -46,7 +47,12 @@ class Vehicles extends Component {
     return (
       <div className="animated fadeIn">
         <Card style={{ height: '600px' }}>
-          <GoogleMapContainer vehicles={this.state.vehicles} />
+          <GoogleMapContainer
+            vehicles={this.state.vehicles}
+            onVehicleClicked={(vehicle) => {
+              this.props.history.push(vehicleLink(vehicle._id));
+            }}
+          />
         </Card>
 
         <Card>
