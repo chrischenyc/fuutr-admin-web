@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Card, CardBody, CardHeader, CardFooter, Alert, Row, Col, Button,
+  Card, CardBody, CardHeader, CardFooter, Alert, Row, Col, Button, Modal, ModalBody, ModalFooter,
 } from 'reactstrap';
 import _ from 'lodash';
 import { Formik } from 'formik';
@@ -18,6 +18,7 @@ const ZonesHeader = () => (
     <th scope="col">id</th>
     <th scope="col">status</th>
     <th scope="col">note</th>
+    <th scope="col">manage</th>
   </tr>
 );
 
@@ -37,10 +38,12 @@ class Zones extends Component {
       pages: 0,
       errors: {},
       zone: defaultZone,
+      zoneToDelete: null,
     };
 
     this.loadZones = this.loadZones.bind(this);
     this.saveZone = this.saveZone.bind(this);
+    this.deleteZone = this.deleteZone.bind(this);
     this.zoneRow = this.zoneRow.bind(this);
   }
 
@@ -90,10 +93,28 @@ class Zones extends Component {
 
       setSubmitting(false);
 
-      // TODO: reload table
+      // TODO: reload table with current page
+      this.loadZones(0);
     } catch (error) {
       setSubmitting(false);
       setErrors(normalizedAPIError(error));
+    }
+  }
+
+  async deleteZone() {
+    try {
+      const { _id } = this.state.zoneToDelete;
+
+      await API({
+        method: 'delete',
+        url: `/zones/${_id}`,
+      });
+
+      this.setState({ zoneToDelete: null });
+      // TODO: reload table with current page
+      this.loadZones(0);
+    } catch (error) {
+      this.setState({ errors: normalizedAPIError(error), zoneToDelete: null });
     }
   }
 
@@ -112,6 +133,18 @@ class Zones extends Component {
           <ZoneStatusBadges zone={zone} />
         </td>
         <td>{note}</td>
+
+        <td>
+          <Button
+            color="danger"
+            onClick={() => {
+              this.setState({ zoneToDelete: zone });
+            }}
+          >
+            delete
+          </Button>
+        </td>
+
       </tr>
     );
   }
@@ -179,6 +212,24 @@ class Zones extends Component {
             />
           </Col>
         </Row>
+
+        <Modal isOpen={this.state.zoneToDelete}>
+          <ModalBody>
+            Delete this zone?
+          </ModalBody>
+          <ModalFooter>
+            <Button color="danger" onClick={this.deleteZone}>Delete</Button>
+            {' '}
+            <Button
+              color="secondary"
+              onClick={() => {
+                this.setState({ zoneToDelete: null });
+              }}
+            >
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
       </div>
     );
   }
