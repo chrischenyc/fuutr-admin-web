@@ -24,7 +24,7 @@ const ZonesHeader = () => (
 const defaultZone = {
   active: true,
   parking: true,
-  speedMode: 3,
+  speedMode: 0,
   note: '',
 };
 
