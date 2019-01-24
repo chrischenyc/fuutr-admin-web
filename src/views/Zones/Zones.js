@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, CardFooter, Alert, Row, Col, Button } from 'reactstrap';
+import {
+  Card, CardBody, CardHeader, CardFooter, Alert, Row, Col, Button,
+} from 'reactstrap';
 import _ from 'lodash';
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -20,8 +22,9 @@ const ZonesHeader = () => (
 );
 
 const defaultZone = {
-  active: false,
-  parking: false,
+  active: true,
+  parking: true,
+  speedMode: 3,
   note: '',
 };
 
@@ -148,8 +151,10 @@ class Zones extends Component {
               render={ZoneForm}
               initialValues={this.state.zone}
               validationSchema={yup.object().shape({
-                vehicleCode: yup.string().required(),
-                iotCode: yup.string().required(),
+                active: yup.bool().required(),
+                parking: yup.bool().required(),
+                speedMode: yup.number(),
+                note: yup.string(),
               })}
               onSubmit={this.handleSaveZone}
             />
