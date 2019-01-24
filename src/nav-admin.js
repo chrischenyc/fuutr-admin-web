@@ -30,18 +30,7 @@ export default {
     {
       name: 'Vehicles',
       icon: 'icon-cursor',
-      children: [
-        {
-          name: 'Vehicles',
-          url: '/vehicles',
-          icon: 'icon-cursor',
-        },
-        {
-          name: 'Add Vehicles',
-          url: '/vehicles/add',
-          icon: 'icon-plus',
-        },
-      ],
+      url: '/vehicles',
     },
     {
       name: 'Zones',
