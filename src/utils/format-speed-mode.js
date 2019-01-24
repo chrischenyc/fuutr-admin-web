@@ -2,6 +2,9 @@
 
 const speedModeString = (speedMode) => {
   switch (speedMode) {
+    case 0:
+      return 'n/a';
+
     case 1:
       return 'low speed';
 

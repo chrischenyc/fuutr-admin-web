@@ -11,12 +11,7 @@ const ZoneForm = ({
   <Form onSubmit={handleSubmit}>
     <FormGroup check>
       <Label check>
-        <Input
-          type="checkbox"
-          name="active"
-          defaultChecked={values.active}
-          onChange={handleChange}
-        />
+        <Input type="checkbox" name="active" checked={values.active} onChange={handleChange} />
         {' '}
         Active
       </Label>
@@ -24,12 +19,7 @@ const ZoneForm = ({
 
     <FormGroup check>
       <Label check>
-        <Input
-          type="checkbox"
-          name="parking"
-          defaultChecked={values.parking}
-          onChange={handleChange}
-        />
+        <Input type="checkbox" name="parking" checked={values.parking} onChange={handleChange} />
         {' '}
         Allow Parking
       </Label>
@@ -41,9 +31,10 @@ const ZoneForm = ({
         type="select"
         name="speedMode"
         id="speedMode"
-        defaultValue={values.speedMode}
+        value={values.speedMode}
         onChange={handleChange}
       >
+        <option value="0">{speedModeString(0)}</option>
         <option value="1">{speedModeString(1)}</option>
         <option value="2">{speedModeString(2)}</option>
         <option value="3">{speedModeString(3)}</option>
@@ -57,7 +48,7 @@ const ZoneForm = ({
         placeholder="note (optional)"
         disabled={isSubmitting}
         invalid={touched.note && !_.isEmpty(errors.note)}
-        defaultValue={values.note}
+        value={values.note}
         onChange={handleChange}
       />
 
