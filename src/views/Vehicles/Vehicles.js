@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import {
-  Card, CardBody, CardHeader, CardFooter, Alert,
+  Card, CardBody, CardHeader, CardFooter, Alert, Button,
 } from 'reactstrap';
 import _ from 'lodash';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 import { API, normalizedAPIError } from '../../api';
 import { VehiclesHeader, VehicleRow } from './Table';
-import MapContainer from '../../components/MapContainer';
+import GoogleMapContainer from '../../components/GoogleMapContainer';
 
 class Vehicles extends Component {
   constructor(props) {
@@ -39,16 +41,25 @@ class Vehicles extends Component {
   }
 
   render() {
+    const { isAdmin } = this.props.user;
+
     return (
       <div className="animated fadeIn">
         <Card style={{ height: '600px' }}>
-          <MapContainer vehicles={this.state.vehicles} />
+          <GoogleMapContainer vehicles={this.state.vehicles} />
         </Card>
 
         <Card>
           <CardHeader>
             <i className="fa fa-align-justify" />
             Vehicles
+            {isAdmin && (
+              <div className="float-right">
+                <Link to="/vehicles/add">
+                  <Button color="primary">Add Vehicle</Button>
+                </Link>
+              </div>
+            )}
           </CardHeader>
 
           <CardBody>
@@ -73,4 +84,8 @@ class Vehicles extends Component {
   }
 }
 
-export default Vehicles;
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps)(Vehicles);
