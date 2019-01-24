@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 
 import PaginationTable from '../../containers/PaginationTable/PaginationTable';
 import { API, normalizedAPIError } from '../../api';
-import MapContainer from '../../components/MapContainer';
+import GoogleMapContainer from '../../components/GoogleMapContainer';
 import ZoneForm from './ZoneForm';
 import ZoneStatusBadges from '../../components/zone-status-badges';
 
@@ -157,7 +157,7 @@ class Zones extends Component {
         <Row>
           <Col md="10">
             <Card style={{ height: '600px' }}>
-              <MapContainer zones={this.state.zones} />
+              <GoogleMapContainer zones={this.state.zones} />
             </Card>
 
             <Card>
