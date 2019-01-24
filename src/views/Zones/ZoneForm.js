@@ -56,7 +56,7 @@ const ZoneForm = ({
     </FormGroup>
 
     <Button type="submit" color="primary" className="px-4" disabled={isSubmitting}>
-      Save
+      {values._id ? 'Update' : 'Create'}
     </Button>
 
     {isSubmitting && (

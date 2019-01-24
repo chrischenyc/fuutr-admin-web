@@ -64,15 +64,33 @@ class Zones extends Component {
     setSubmitting(true);
 
     try {
-      const zone = await API({
-        data: values,
-        method: 'post',
-        url: '/zones',
-      });
+      const { _id } = values;
+
+      let response;
+
+      if (_id) {
+        // update
+        response = await API({
+          data: values,
+          method: 'patch',
+          url: `/zones/${_id}`,
+        });
+      } else {
+        // create
+        response = await API({
+          data: values,
+          method: 'post',
+          url: '/zones',
+        });
+      }
+
+      const { data: zone } = response;
 
       this.setState({ zone });
 
       setSubmitting(false);
+
+      // TODO: reload table
     } catch (error) {
       setSubmitting(false);
       setErrors(normalizedAPIError(error));
@@ -154,10 +172,10 @@ class Zones extends Component {
               validationSchema={yup.object().shape({
                 active: yup.bool().required(),
                 parking: yup.bool().required(),
-                speedMode: yup.number(),
-                note: yup.string(),
+                speedMode: yup.number().required(),
+                note: yup.string().notRequired(),
               })}
-              onSubmit={this.handleSaveZone}
+              onSubmit={this.saveZone}
             />
           </Col>
         </Row>
