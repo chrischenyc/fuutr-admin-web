@@ -1,38 +1,67 @@
 import React from 'react';
 import {
-  Button, Form, FormText, FormFeedback, Input, FormGroup, Col,
+  Button, Form, FormText, FormFeedback, Input, FormGroup, Col, Label,
 } from 'reactstrap';
-import { Field } from 'formik';
 import _ from 'lodash';
+import speedModeString from '../../utils/format-speed-mode';
 
 const ZoneForm = ({
-  handleSubmit, errors, isSubmitting, touched,
+  handleSubmit, errors, isSubmitting, touched, values, handleChange,
 }) => (
   <Form onSubmit={handleSubmit}>
-    <FormGroup>
-      <Input
-        tag={Field}
-        type="text"
-        name="iotCode"
-        placeholder="IoT code"
-        disabled={isSubmitting}
-        invalid={touched.iotCode && !_.isEmpty(errors.iotCode)}
-      />
+    <FormGroup check>
+      <Label check>
+        <Input
+          type="checkbox"
+          name="active"
+          defaultChecked={values.active}
+          onChange={handleChange}
+        />
+        {' '}
+        Active
+      </Label>
+    </FormGroup>
 
-      {touched.iotCode && <FormFeedback>{errors.iotCode}</FormFeedback>}
+    <FormGroup check>
+      <Label check>
+        <Input
+          type="checkbox"
+          name="parking"
+          defaultChecked={values.parking}
+          onChange={handleChange}
+        />
+        {' '}
+        Allow Parking
+      </Label>
+    </FormGroup>
+
+    <FormGroup>
+      <Label for="speedMode">Speed Mode</Label>
+      <Input
+        type="select"
+        name="speedMode"
+        id="speedMode"
+        defaultValue={values.speedMode}
+        onChange={handleChange}
+      >
+        <option value="1">{speedModeString(1)}</option>
+        <option value="2">{speedModeString(2)}</option>
+        <option value="3">{speedModeString(3)}</option>
+      </Input>
     </FormGroup>
 
     <FormGroup>
       <Input
-        tag={Field}
         type="text"
-        name="vehicleCode"
-        placeholder="vehicle code"
+        name="note"
+        placeholder="note (optional)"
         disabled={isSubmitting}
-        invalid={touched.vehicleCode && !_.isEmpty(errors.vehicleCode)}
+        invalid={touched.note && !_.isEmpty(errors.note)}
+        defaultValue={values.note}
+        onChange={handleChange}
       />
 
-      {touched.vehicleCode && <FormFeedback>{errors.vehicleCode}</FormFeedback>}
+      {touched.note && <FormFeedback>{errors.note}</FormFeedback>}
     </FormGroup>
 
     <Button type="submit" color="primary" className="px-4" disabled={isSubmitting}>
