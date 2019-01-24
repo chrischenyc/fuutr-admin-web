@@ -9,7 +9,7 @@ const ZoneForm = ({
   handleSubmit, errors, isSubmitting, touched, values, handleChange,
 }) => (
   <Form onSubmit={handleSubmit}>
-    <FormGroup check>
+    <FormGroup check style={{ marginBottom: '0.5em' }}>
       <Label check>
         <Input type="checkbox" name="active" checked={values.active} onChange={handleChange} />
         {' '}
@@ -17,7 +17,7 @@ const ZoneForm = ({
       </Label>
     </FormGroup>
 
-    <FormGroup check>
+    <FormGroup check style={{ marginBottom: '0.5em' }}>
       <Label check>
         <Input type="checkbox" name="parking" checked={values.parking} onChange={handleChange} />
         {' '}
@@ -26,7 +26,7 @@ const ZoneForm = ({
     </FormGroup>
 
     <FormGroup>
-      <Label for="speedMode">Speed Mode</Label>
+      <Label for="speedMode">Speed Limit</Label>
       <Input
         type="select"
         name="speedMode"
