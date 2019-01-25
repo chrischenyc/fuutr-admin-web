@@ -54,7 +54,7 @@ class GoogleMapContainer extends Component {
 
     this.state = {
       google: null,
-      mapKey: uuid.v4(),
+      mapKey: uuid.v4(), // update key to force reload google map, not ideal
     };
 
     this.renderOnGoogleMap = this.renderOnGoogleMap.bind(this);
@@ -103,12 +103,14 @@ class GoogleMapContainer extends Component {
     // TODO: clear current polygons
 
     // iterate all the zones to add their polygons to map
-    zones
-      .filter(zone => zone.active)
-      .forEach((zone) => {
-        const zonePolygon = zoneToGoogleMapPolygon(google, zone);
-        zonePolygon.setMap(google.map);
-      });
+    if (zones) {
+      zones
+        .filter(zone => zone.active)
+        .forEach((zone) => {
+          const zonePolygon = zoneToGoogleMapPolygon(google, zone);
+          zonePolygon.setMap(google.map);
+        });
+    }
   }
 
   render() {
