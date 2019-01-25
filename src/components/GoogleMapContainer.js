@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
+import uuid from 'uuid';
 
 import GoogleMapVehicleMarker from './GoogleMapVehicleMark';
 
@@ -51,10 +52,22 @@ class GoogleMapContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.handleGoogleMapApi = this.handleGoogleMapApi.bind(this);
+    this.state = {
+      google: null,
+      mapKey: uuid.v4(),
+    };
+
+    this.renderOnGoogleMap = this.renderOnGoogleMap.bind(this);
   }
 
-  handleGoogleMapApi(google) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.zones !== this.props.zones && this.state.google) {
+      // this.renderOnGoogleMap(this.state.google);
+      this.setState({ mapKey: uuid.v4() });
+    }
+  }
+
+  renderOnGoogleMap(google) {
     const { zoneEditing, zones, onPolygonComplete } = this.props;
 
     if (zoneEditing) {
@@ -87,6 +100,8 @@ class GoogleMapContainer extends Component {
       });
     }
 
+    // TODO: clear current polygons
+
     // iterate all the zones to add their polygons to map
     zones
       .filter(zone => zone.active)
@@ -102,10 +117,14 @@ class GoogleMapContainer extends Component {
     return (
       <div style={{ height: '100%', width: '100%' }}>
         <GoogleMapReact
+          key={this.state.mapKey}
           defaultCenter={{ lat: -37.8136, lng: 144.9631 }}
           defaultZoom={12}
           yesIWantToUseGoogleMapApiInternals
-          onGoogleApiLoaded={this.handleGoogleMapApi}
+          onGoogleApiLoaded={(google) => {
+            this.setState({ google });
+            this.renderOnGoogleMap(google);
+          }}
           bootstrapURLKeys={{
             libraries: 'drawing',
             key: process.env.REACT_APP_GOOGLE_MAP_API_KEY,

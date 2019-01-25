@@ -250,7 +250,7 @@ class Zones extends Component {
           </Col>
         </Row>
 
-        <Modal isOpen={this.state.zoneToDelete}>
+        <Modal isOpen={!_.isNil(this.state.zoneToDelete)}>
           <ModalBody>
             Delete this zone?
           </ModalBody>
