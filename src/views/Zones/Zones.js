@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import {
-  Card, CardBody, CardHeader, CardFooter, Alert, Row, Col, Button, Modal, ModalBody, ModalFooter,
+  Card,
+  CardBody,
+  CardHeader,
+  CardFooter,
+  Alert,
+  Row,
+  Col,
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter,
 } from 'reactstrap';
 import _ from 'lodash';
 import { Formik } from 'formik';
@@ -34,17 +44,21 @@ class Zones extends Component {
     super(props);
 
     this.state = {
-      zones: [],
+      zones: [], // existing zones
       pages: 0,
       errors: {},
-      zone: defaultZone,
+      zone: defaultZone, // currently-edited zone
+      polygon: null, // currently-edited polygon, GeoJSON format
       zoneToDelete: null,
+      missingZoneWarning: false,
     };
 
     this.loadZones = this.loadZones.bind(this);
+    this.selectZone = this.selectZone.bind(this);
     this.saveZone = this.saveZone.bind(this);
     this.deleteZone = this.deleteZone.bind(this);
     this.zoneRow = this.zoneRow.bind(this);
+    this.handleOnPolygonComplete = this.handleOnPolygonComplete.bind(this);
   }
 
   async loadZones(page, search) {
@@ -63,25 +77,39 @@ class Zones extends Component {
     }
   }
 
+  selectZone(zone) {
+    // save zone and its polygon separately
+    this.setState({ zone: _.omit(zone, 'polygon'), polygon: zone.polygon });
+  }
+
   async saveZone(values, { setSubmitting, setErrors }) {
+    const { polygon } = this.state;
+
+    if (!polygon) {
+      this.setState({ missingZoneWarning: true });
+      setSubmitting(false);
+      return;
+    }
+
     setSubmitting(true);
+
+    const data = { ...values, polygon };
 
     try {
       const { _id } = values;
-
       let response;
 
       if (_id) {
         // update
         response = await API({
-          data: values,
+          data,
           method: 'patch',
           url: `/zones/${_id}`,
         });
       } else {
         // create
         response = await API({
-          data: values,
+          data,
           method: 'post',
           url: '/zones',
         });
@@ -110,7 +138,7 @@ class Zones extends Component {
         url: `/zones/${_id}`,
       });
 
-      this.setState({ zoneToDelete: null });
+      this.setState({ zone: defaultZone, polygon: null, zoneToDelete: null });
       // TODO: reload table with current page
       this.loadZones(0);
     } catch (error) {
@@ -125,7 +153,7 @@ class Zones extends Component {
       <tr
         key={_id}
         onClick={() => {
-          this.setState({ zone });
+          this.selectZone(zone);
         }}
       >
         <td>{_id}</td>
@@ -144,9 +172,13 @@ class Zones extends Component {
             delete
           </Button>
         </td>
-
       </tr>
     );
+  }
+
+  handleOnPolygonComplete(coordinates) {
+    // mongodb requires Polygon have the same coordinate as its first and last node
+    this.setState({ polygon: { type: 'Polygon', coordinates: [[...coordinates, coordinates[0]]] } });
   }
 
   render() {
@@ -157,7 +189,11 @@ class Zones extends Component {
         <Row>
           <Col md="10">
             <Card style={{ height: '600px' }}>
-              <GoogleMapContainer zones={this.state.zones} />
+              <GoogleMapContainer
+                zoneEditing
+                zones={this.state.zones}
+                onPolygonComplete={this.handleOnPolygonComplete}
+              />
             </Card>
 
             <Card>
@@ -169,7 +205,7 @@ class Zones extends Component {
                     <Button
                       color="primary"
                       onClick={() => {
-                        this.setState({ zone: defaultZone });
+                        this.setState({ zone: defaultZone, polygon: null });
                       }}
                     >
                       Add Zone
@@ -200,6 +236,7 @@ class Zones extends Component {
           <Col md="2">
             <Formik
               render={ZoneForm}
+              isInitialValid
               enableReinitialize
               initialValues={this.state.zone}
               validationSchema={yup.object().shape({
@@ -227,6 +264,22 @@ class Zones extends Component {
               }}
             >
               Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+
+        <Modal isOpen={this.state.missingZoneWarning}>
+          <ModalBody>
+            Please draw a polygon on map for this zone!
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              color="primary"
+              onClick={() => {
+                this.setState({ missingZoneWarning: false });
+              }}
+            >
+              Okay
             </Button>
           </ModalFooter>
         </Modal>
