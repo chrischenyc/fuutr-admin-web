@@ -6,7 +6,13 @@ import _ from 'lodash';
 import speedModeString from '../../utils/format-speed-mode';
 
 const ZoneForm = ({
-  handleSubmit, errors, isSubmitting, touched, values, handleChange,
+  handleSubmit,
+  errors,
+  isSubmitting,
+  touched,
+  values,
+  handleChange,
+  isValid,
 }) => (
   <Form onSubmit={handleSubmit}>
     <FormGroup check style={{ marginBottom: '0.5em' }}>
@@ -55,7 +61,7 @@ const ZoneForm = ({
       {touched.note && <FormFeedback>{errors.note}</FormFeedback>}
     </FormGroup>
 
-    <Button type="submit" color="primary" className="px-4" disabled={isSubmitting}>
+    <Button type="submit" color="primary" className="px-4" disabled={!isValid || isSubmitting}>
       {values._id ? 'Update' : 'Create'}
     </Button>
 
