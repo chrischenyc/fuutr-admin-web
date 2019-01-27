@@ -27,7 +27,7 @@ const VehicleStatusBadges = (props) => {
       &nbsp;
       {reserved && <Badge color="info">reserved</Badge>}
       &nbsp;
-      {inRide && <Badge color="info">reserved</Badge>}
+      {inRide && <Badge color="info">in ride</Badge>}
       &nbsp;
       {!_.isNil(speedMode) && <Badge color="info">{speedModeString(speedMode)}</Badge>}
     </Fragment>
