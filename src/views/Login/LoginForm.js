@@ -18,11 +18,10 @@ const LoginForm = ({
   handleSubmit, errors, isSubmitting, touched,
 }) => (
   <Form onSubmit={handleSubmit}>
-    <h1>OTG Ride Admin</h1>
+    <h1>FUUTR Admin</h1>
 
     <p className="text-muted">
-      Sign In with your OTG Rider account. If you forgot password, please reset it by using OTG
-      Rider app.
+      Sign In with your FUUTR account. If you forgot password, please reset it by using FUUTR app.
     </p>
 
     <InputGroup className="mb-3">
