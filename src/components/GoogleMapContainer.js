@@ -120,8 +120,11 @@ class GoogleMapContainer extends Component {
       <div style={{ height: '100%', width: '100%' }}>
         <GoogleMapReact
           key={this.state.mapKey}
-          defaultCenter={{ lat: -34.9265672, lng: 138.5946836 }}
-          defaultZoom={14}
+          defaultCenter={{
+            lat: parseFloat(process.env.REACT_APP_GOOGLE_MAP_DEFAULT_CENTER_LAT),
+            lng: parseFloat(process.env.REACT_APP_GOOGLE_MAP_DEFAULT_CENTER_LNG),
+          }}
+          defaultZoom={parseFloat(process.env.REACT_APP_GOOGLE_MAP_DEFAULT_ZOOM)}
           yesIWantToUseGoogleMapApiInternals
           onGoogleApiLoaded={(google) => {
             this.setState({ google });
