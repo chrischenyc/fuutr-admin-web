@@ -217,7 +217,7 @@ class Vehicle extends Component {
 
                             &nbsp;
 
-                            { address && { address }}
+                            { address && <span>{address}</span>}
                           </Fragment>
                         )}
                       </td>
