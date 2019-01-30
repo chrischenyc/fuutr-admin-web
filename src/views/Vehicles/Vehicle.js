@@ -104,6 +104,7 @@ class Vehicle extends Component {
       remainderRange,
       location,
       locked,
+      address,
     } = vehicle;
 
     return (
@@ -205,13 +206,19 @@ class Vehicle extends Component {
                       <th>last location</th>
                       <td>
                         {location && location.coordinates && (
-                          <a
-                            href={coordinatesMapLink(location.coordinates)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <i className="icon-map" />
-                          </a>
+                          <Fragment>
+                            <a
+                              href={coordinatesMapLink(location.coordinates)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <i className="icon-map" />
+                            </a>
+
+                            &nbsp;
+
+                            { address && { address }}
+                          </Fragment>
                         )}
                       </td>
                     </tr>
