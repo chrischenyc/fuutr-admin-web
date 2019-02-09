@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "FUUTR Admin web port based on CoreUI React Open Source Bootstrap 4 Admin Template",
   "author": "Chris Chen",
-  "homepage": "https://admin.otgride.com",
-  "copyright": "Copyright 2018 Chris Chen",
+  "homepage": "https://admin.fuutr.co",
+  "copyright": "Copyright 2018-2019 FUUTR",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://chrischen79@bitbucket.org/otg-ride-dev/admin-web.git"
+    "url": "https://bitbucket.org/fuutr/admin-web"
   },
   "dependencies": {
     "@coreui/coreui": "^2.1.6",
