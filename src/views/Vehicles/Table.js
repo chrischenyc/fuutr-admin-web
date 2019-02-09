@@ -31,7 +31,7 @@ export const VehicleRow = (vehicle) => {
       <td>{unlockCode}</td>
       <td>{iotCode}</td>
       <td>{vehicleCode}</td>
-      <td>{distanceString(remainderRange * 10)}</td>
+      <td>{distanceString(remainderRange)}</td>
       <td>
         <VehicleStatusBadges vehicle={vehicle} />
       </td>
