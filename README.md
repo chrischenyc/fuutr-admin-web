@@ -11,7 +11,7 @@ based on [CoreUI Free React Admin Template v2](https://github.com/coreui/coreui-
 
 ```bash
 # clone the repo
-$ git clone git clone https://chrischen79@bitbucket.org/otg-ride-dev/admin-web.git
+$ git clone git clone https://bitbucket.org/fuutr/admin-web
 
 # go into app's directory
 $ cd admin-web

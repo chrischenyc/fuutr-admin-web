@@ -6,7 +6,7 @@ const reducer = combineReducers({
   user,
 });
 
-const storeKey = 'com.otgride.admin.redux';
+const storeKey = 'co.fuutr.admin.redux';
 
 const persistedState = localStorage.getItem(storeKey)
   ? JSON.parse(localStorage.getItem(storeKey))
