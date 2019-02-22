@@ -244,6 +244,7 @@ class Zones extends Component {
               initialValues={this.state.zone}
               validationSchema={yup.object().shape({
                 active: yup.bool().required(),
+                riding: yup.bool().required(),
                 parking: yup.bool().required(),
                 speedMode: yup.number().required(),
                 note: yup.string().notRequired(),
