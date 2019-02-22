@@ -34,6 +34,7 @@ const ZonesHeader = () => (
 
 const defaultZone = {
   active: true,
+  riding: true,
   parking: true,
   speedMode: 0,
   note: '',
@@ -178,7 +179,9 @@ class Zones extends Component {
 
   handleOnPolygonComplete(coordinates) {
     // mongodb requires Polygon have the same coordinate as its first and last node
-    this.setState({ polygon: { type: 'Polygon', coordinates: [[...coordinates, coordinates[0]]] } });
+    this.setState({
+      polygon: { type: 'Polygon', coordinates: [[...coordinates, coordinates[0]]] },
+    });
   }
 
   render() {
@@ -251,11 +254,11 @@ class Zones extends Component {
         </Row>
 
         <Modal isOpen={!_.isNil(this.state.zoneToDelete)}>
-          <ModalBody>
-            Delete this zone?
-          </ModalBody>
+          <ModalBody>Delete this zone?</ModalBody>
           <ModalFooter>
-            <Button color="danger" onClick={this.deleteZone}>Delete</Button>
+            <Button color="danger" onClick={this.deleteZone}>
+              Delete
+            </Button>
             {' '}
             <Button
               color="secondary"
@@ -269,9 +272,7 @@ class Zones extends Component {
         </Modal>
 
         <Modal isOpen={this.state.missingZoneWarning}>
-          <ModalBody>
-            Please draw a polygon on map for this zone!
-          </ModalBody>
+          <ModalBody>Please draw a polygon on map for this zone!</ModalBody>
           <ModalFooter>
             <Button
               color="primary"

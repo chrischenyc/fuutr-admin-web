@@ -25,7 +25,20 @@ const ZoneForm = ({
 
     <FormGroup check style={{ marginBottom: '0.5em' }}>
       <Label check>
-        <Input type="checkbox" name="parking" checked={values.parking} onChange={handleChange} />
+        <Input type="checkbox" name="riding" checked={values.riding} onChange={handleChange} />
+        {' '}
+        Allow Riding
+      </Label>
+    </FormGroup>
+
+    <FormGroup check style={{ marginBottom: '0.5em' }}>
+      <Label check>
+        <Input
+          type="checkbox"
+          name="parking"
+          checked={values.riding && values.parking}
+          onChange={handleChange}
+        />
         {' '}
         Allow Parking
       </Label>
@@ -37,7 +50,7 @@ const ZoneForm = ({
         type="select"
         name="speedMode"
         id="speedMode"
-        value={values.speedMode}
+        value={values.riding ? values.speedMode : 1}
         onChange={handleChange}
       >
         <option value="0">{speedModeString(0)}</option>

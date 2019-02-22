@@ -3,16 +3,16 @@
 const speedModeString = (speedMode) => {
   switch (speedMode) {
     case 0:
-      return 'n/a';
+      return 'no speed limit';
 
     case 1:
-      return 'low speed';
+      return 'low: 6 km/h';
 
     case 2:
-      return 'medium speed';
+      return 'medium: 15 km/h';
 
     case 3:
-      return 'high speed';
+      return 'high: 25 km/h';
 
     default:
       return 'unknown';
