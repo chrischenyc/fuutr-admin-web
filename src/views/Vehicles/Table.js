@@ -20,7 +20,7 @@ export const VehiclesHeader = () => (
 
 export const VehicleRow = (vehicle) => {
   const {
-    _id, unlockCode, iotCode, vehicleCode, remainderRange,
+    _id, unlockCode, iotCode, vehicleCode, remainingRange,
   } = vehicle;
 
   return (
@@ -31,7 +31,7 @@ export const VehicleRow = (vehicle) => {
       <td>{unlockCode}</td>
       <td>{iotCode}</td>
       <td>{vehicleCode}</td>
-      <td>{distanceString(remainderRange)}</td>
+      <td>{distanceString(remainingRange)}</td>
       <td>
         <VehicleStatusBadges vehicle={vehicle} />
       </td>
