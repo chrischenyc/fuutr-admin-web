@@ -15,12 +15,14 @@ const zoneToGoogleMapPolygon = (google, zone) => {
 
   let color;
 
-  if (!zone.parking) {
+  if (!zone.riding) {
     color = '#FF0000';
+  } else if (!zone.parking) {
+    color = '#EE6F2D';
   } else {
     switch (zone.speedMode) {
       case 1:
-        color = '#EE6F2D';
+        color = '#EEaF2D';
         break;
 
       case 2:
