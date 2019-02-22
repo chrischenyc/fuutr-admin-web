@@ -101,7 +101,7 @@ class Vehicle extends Component {
       createdAt,
       speedMode,
       odometer,
-      remainderRange,
+      remainingRange,
       location,
       locked,
       address,
@@ -189,7 +189,7 @@ class Vehicle extends Component {
 
                     <tr>
                       <th>range</th>
-                      <td>{distanceString(remainderRange)}</td>
+                      <td>{distanceString(remainingRange)}</td>
                     </tr>
 
                     <tr>
