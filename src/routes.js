@@ -14,6 +14,8 @@ const AddVehicle = React.lazy(() => import('./views/AddVehicle/AddVehicle'));
 const EditVehicle = React.lazy(() => import('./views/EditVehicle/EditVehicle'));
 const Zones = React.lazy(() => import('./views/Zones/Zones'));
 const Contact = React.lazy(() => import('./views/Contact/Contact'));
+const Issues = React.lazy(() => import('./views/Issues/Issues'));
+const Issue = React.lazy(() => import('./views/Issues/Issue'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -35,6 +37,9 @@ const routes = [
   { path: '/vehicles/:_id/edit', exact: true, name: 'Edit Vehicle', component: EditVehicle },
 
   { path: '/zones', exact: true, name: 'Zones', component: Zones },
+
+  { path: '/issues', exact: true, name: 'Issues', component: Issues },
+  { path: '/issues/:_id', exact: true, name: 'Issue Details', component: Issue },
 
   { path: '/contact', exact: true, name: 'Contact', component: Contact },
 ];
