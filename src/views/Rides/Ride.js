@@ -66,6 +66,7 @@ class Ride extends Component {
       unlockCost,
       minuteCost,
       totalCost,
+      parkedPhoto,
     } = ride;
 
     return (
@@ -152,6 +153,16 @@ class Ride extends Component {
                     <tr>
                       <th>Total Cost</th>
                       <td>{priceString(totalCost)}</td>
+                    </tr>
+                    <tr>
+                      <th>Parked photo</th>
+                      <td>
+                        {parkedPhoto && (
+                          <a href={parkedPhoto}>
+                            <img src={parkedPhoto} alt="issue" style={{ width: '400px' }} />
+                          </a>
+                        )}
+                      </td>
                     </tr>
                   </tbody>
                 </Table>
