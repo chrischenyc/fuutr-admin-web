@@ -38,6 +38,11 @@ export default {
       icon: 'icon-map',
     },
     {
+      name: 'Issues',
+      url: '/issues',
+      icon: 'icon-envelope',
+    },
+    {
       name: 'Payments',
       url: '/payments',
       icon: 'icon-credit-card',
