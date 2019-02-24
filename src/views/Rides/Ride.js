@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import RideStatusBadge from '../../components/ride-status-badge';
 
 import { API, normalizedAPIError } from '../../api';
-import { dateTimeString } from '../../utils/format-date';
+import { dateTimeString, timeString } from '../../utils/format-date';
 import priceString from '../../utils/format-price';
 import distanceString from '../../utils/format-distance';
 import durationString from '../../utils/format-duration';
@@ -64,7 +64,7 @@ class Ride extends Component {
       duration,
       distance,
       unlockCost,
-      minuteCost,
+      segments,
       totalCost,
       parkedPhoto,
     } = ride;
@@ -148,7 +148,17 @@ class Ride extends Component {
                     </tr>
                     <tr>
                       <th>Riding Cost</th>
-                      <td>{priceString(minuteCost)}</td>
+                      <td>
+                        <ul>
+                          {segments.map(segment => (
+                            <li>
+                              {`${segment.paused ? 'locked' : 'riding'} ${timeString(
+                                segment.start,
+                              )} - ${timeString(segment.end)}: ${priceString(segment.cost)}`}
+                            </li>
+                          ))}
+                        </ul>
+                      </td>
                     </tr>
                     <tr>
                       <th>Total Cost</th>
